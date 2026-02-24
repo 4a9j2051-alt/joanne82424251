@@ -16,7 +16,7 @@
     <!-- 引入 Phosphor Icons (精緻線條圖示) -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- Tailwind 自定義設定 (新增極淺橄欖綠色調) -->
+    <!-- Tailwind 自定義設定 (極淺橄欖綠色調) -->
     <script>
         tailwind.config = {
             theme: {
@@ -28,9 +28,9 @@
                     colors: {
                         brand: {
                             gold: '#C1A06E',
-                            dark: '#2A3028', /* 深橄欖灰，取代純黑 */
+                            dark: '#2A3028',
                             gray: '#F8F8F8',
-                            olive: '#EAEFE8', /* 極淺橄欖綠，作為主背景色 */
+                            olive: '#EAEFE8',
                             light: '#FFFFFF'
                         }
                     },
@@ -69,7 +69,7 @@
             transform: scale(1.05);
         }
 
-        /* 脈衝圓點動畫 (用於地圖熱點) */
+        /* 脈衝圓點動畫 */
         @keyframes pulse-ring {
             0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(193, 160, 110, 0.7); }
             70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(193, 160, 110, 0); }
@@ -83,6 +83,23 @@
         @media (min-width: 1024px) {
             .overlap-text { margin-left: -10%; z-index: 10; position: relative; }
             .overlap-img { margin-right: -5%; }
+        }
+
+        /* ----- 視差動畫專用 CSS ----- */
+        .parallax-layer {
+            /* 讓圖層稍微大於視窗，防止移動時邊緣穿幫 */
+            width: 110vw;
+            height: 110vh;
+            top: -5vh;
+            left: -5vw;
+            /* 讓移動過程如絲般滑順，避免滑鼠移動時卡頓 */
+            transition: transform 0.15s cubic-bezier(0.2, 0, 0.2, 1);
+            will-change: transform;
+        }
+        
+        /* 處理帶有黑底的雲朵 JPG，讓黑色變透明 */
+        .blend-screen {
+            mix-blend-mode: screen;
         }
     </style>
 </head>
@@ -128,35 +145,36 @@
         </a>
     </div>
 
-    <!-- 首屏 Hero Section (換回日初觀山影片循環播放) -->
-    <section class="relative h-screen w-full overflow-hidden flex items-center justify-center">
-        <!-- 影片背景 (日初觀山.mp4) -->
-        <video autoplay loop muted playsinline class="absolute top-0 left-0 w-full h-full object-cover z-0" poster="https://joanne82424250-maker.github.io/my-web/15.jpg">
-            <source src="日初觀山.mp4" type="video/mp4">
-            <!-- 影片無法載入時的降級圖片 -->
-            <img src="https://joanne82424250-maker.github.io/my-web/15.jpg" alt="日初觀山" class="w-full h-full object-cover">
-        </video>
-        <!-- 漸層遮罩讓文字更清晰 -->
-        <div class="absolute inset-0 bg-black/40 z-10"></div>
+    <!-- 🌟 首屏 Hero Section (互動式 3D 視差動畫) 🌟 -->
+    <section id="parallax-hero" class="relative h-screen w-full overflow-hidden bg-[#1A1C19] flex items-center justify-center">
         
-        <div class="relative z-20 text-center text-white px-4 reveal">
-            <h2 class="text-sm md:text-base uppercase tracking-[0.3em] text-brand-gold mb-4 font-light">Academic Elegance • Quiet Luxury</h2>
-            <h1 class="font-serif text-4xl md:text-6xl lg:text-7xl font-semibold tracking-wider mb-6 drop-shadow-lg">日初觀山</h1>
-            <p class="text-lg md:text-2xl font-light tracking-widest mb-10">溪湖高中旁 ・ 境美別墅聚落</p>
-            <a href="#contact" class="inline-block border border-white/50 backdrop-blur-sm px-10 py-3 text-sm tracking-widest hover:bg-white hover:text-brand-dark transition-colors">
-                預約極致生活
-            </a>
+        <!-- 1. 背景層 (遠山)：移動最慢 data-speed="0.02" -->
+        <img src="BG.jpg" class="parallax-layer absolute object-cover z-0" data-speed="0.02" alt="遠山背景">
+        
+        <!-- 2. 中景層 (雲霧)：速度中等 data-speed="0.04"，使用 blend-screen 去黑底 -->
+        <img src="sky_3.jpg" class="parallax-layer blend-screen absolute object-cover opacity-80 z-10 top-[10%]" data-speed="0.04" alt="雲霧">
+        
+        <!-- 3. 文字層：懸浮於半空，稍微反向移動產生漂浮感 data-speed="-0.01" -->
+        <div class="parallax-layer absolute z-20 flex flex-col items-center justify-center text-white pointer-events-none" data-speed="-0.01">
+            <h2 class="text-sm md:text-base uppercase tracking-[0.3em] text-brand-gold mb-4 font-light drop-shadow-md">Academic Elegance • Quiet Luxury</h2>
+            <!-- 文字加上極細微的黑色發光邊緣，確保在雲霧中依然清晰 -->
+            <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl font-semibold tracking-wider mb-6 drop-shadow-[0_4px_10px_rgba(0,0,0,0.5)]">日初觀山</h1>
+            <p class="text-lg md:text-2xl font-light tracking-widest drop-shadow-[0_2px_5px_rgba(0,0,0,0.5)]">溪湖高中旁 ・ 境美別墅聚落</p>
         </div>
-        
-        <!-- 向下滾動提示 -->
-        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 text-white/70 flex flex-col items-center animate-bounce">
-            <span class="text-xs tracking-[0.2em] mb-2 uppercase">Scroll</span>
-            <i class="ph ph-arrow-down text-lg"></i>
+
+        <!-- 4. 前景層 (綠色山脈)：移動最快，創造強烈深度 data-speed="0.08" -->
+        <!-- object-bottom 確保山腳貼齊畫面底部 -->
+        <img src="FRONT.png" class="parallax-layer absolute object-cover object-bottom z-30 scale-105" data-speed="0.08" alt="近景山脈">
+
+        <!-- 向下滾動提示 (維持在最上層) -->
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-40 text-white/80 flex flex-col items-center animate-bounce cursor-pointer hover:text-white transition-colors" onclick="document.getElementById('about').scrollIntoView({behavior: 'smooth'})">
+            <span class="text-xs tracking-[0.2em] mb-2 uppercase drop-shadow-md">Scroll</span>
+            <i class="ph ph-arrow-down text-lg drop-shadow-md"></i>
         </div>
     </section>
 
     <!-- 關於本案 Design Philosophy -->
-    <section id="about" class="py-24 md:py-32 bg-brand-olive relative">
+    <section id="about" class="py-24 md:py-32 bg-brand-olive relative z-40">
         <div class="max-w-4xl mx-auto text-center px-6 reveal">
             <div class="text-brand-gold text-xs tracking-[0.3em] font-bold uppercase mb-6">Design Philosophy</div>
             <h2 class="font-serif text-3xl md:text-5xl leading-tight mb-10 text-brand-dark">
@@ -172,7 +190,7 @@
     </section>
 
     <!-- 建築外觀 Exterior Art -->
-    <section id="exterior" class="py-24 bg-white overflow-hidden">
+    <section id="exterior" class="py-24 bg-white overflow-hidden relative z-40">
         <div class="max-w-7xl mx-auto px-6 flex flex-col lg:flex-row items-center reveal">
             <!-- 文字區塊 -->
             <div class="lg:w-5/12 z-10 lg:pr-10 mb-12 lg:mb-0">
@@ -190,7 +208,7 @@
     </section>
 
     <!-- 大尺度規劃 Master Planning -->
-    <section id="planning" class="py-24 bg-brand-olive">
+    <section id="planning" class="py-24 bg-brand-olive relative z-40">
         <div class="max-w-7xl mx-auto px-6 reveal">
             <div class="text-center mb-16">
                 <div class="text-brand-gold text-xs tracking-[0.3em] font-bold uppercase mb-4">Master Planning</div>
@@ -237,7 +255,7 @@
     </section>
 
     <!-- 空間美學 Space Harmony -->
-    <section class="py-24 bg-white overflow-hidden">
+    <section class="py-24 bg-white overflow-hidden relative z-40">
         <div class="max-w-7xl mx-auto px-6 reveal">
             <div class="text-center mb-16">
                 <div class="text-brand-gold text-xs tracking-[0.3em] font-bold uppercase mb-4">Space Harmony</div>
@@ -261,8 +279,8 @@
         </div>
     </section>
 
-    <!-- 周邊環境 Strategic Location (替換為循環地圖動畫影片) -->
-    <section id="location" class="py-24 bg-brand-dark text-white relative">
+    <!-- 周邊環境 Strategic Location (地圖動畫) -->
+    <section id="location" class="py-24 bg-brand-dark text-white relative z-40">
         <div class="max-w-7xl mx-auto px-6 reveal">
             <div class="text-center mb-16">
                 <h2 class="font-serif text-3xl md:text-4xl mb-4 text-[#EAEFE8]">繁華與安寧的交界</h2>
@@ -272,28 +290,21 @@
             </div>
             
             <div class="relative w-full rounded-xl overflow-hidden shadow-2xl border border-white/10 group bg-black">
-                <!-- 替換原本的 15.jpg 為您上傳的地圖動態影片 -->
                 <video autoplay loop muted playsinline class="w-full h-auto opacity-80 group-hover:opacity-100 transition-opacity duration-700">
                     <source src="jimeng-2026-02-24-6258-將這張圖片變成流暢的循環動畫地圖動畫Motion 開頭和結尾要一樣 要看起來有質....mp4" type="video/mp4">
-                    <!-- 影片無法載入時的降級圖片 -->
                     <img src="https://joanne82424250-maker.github.io/my-web/15.jpg" alt="空拍位置圖" class="w-full h-auto">
                 </video>
                 
-                <!-- 動態熱點標註 (絕對定位範例) -->
-                <div class="absolute top-[45%] left-[48%] flex flex-col items-center">
+                <div class="absolute top-[45%] left-[48%] flex flex-col items-center pointer-events-none">
                     <div class="w-4 h-4 bg-brand-gold rounded-full hotspot-pulse mb-1"></div>
                     <span class="bg-black/60 backdrop-blur text-white text-xs px-2 py-1 rounded tracking-wider border border-brand-gold/50">日初觀山</span>
-                </div>
-                <div class="absolute top-[30%] left-[65%] flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity delay-300">
-                    <span class="bg-black/60 text-white text-xs px-2 py-1 rounded tracking-wider mb-1">溪湖高中</span>
-                    <span class="text-[10px] text-brand-gold">步行 3 分</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 藝廊 Gallery (瀑布流) -->
-    <section class="py-24 bg-brand-olive">
+    <!-- 藝廊 Gallery -->
+    <section class="py-24 bg-brand-olive relative z-40">
         <div class="max-w-7xl mx-auto px-6 reveal">
             <div class="flex justify-between items-end mb-12 border-b border-[#D5DDD2] pb-4">
                 <h2 class="font-serif text-3xl text-brand-dark">建築藝廊</h2>
@@ -321,49 +332,36 @@
     </section>
 
     <!-- 品牌形象影片 Brand Concept Video -->
-    <section class="py-24 bg-brand-dark text-[#EAEFE8] overflow-hidden relative">
+    <section class="py-24 bg-brand-dark text-[#EAEFE8] overflow-hidden relative z-40">
         <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]"></div>
         <div class="max-w-6xl mx-auto px-6 relative z-10 reveal">
             <div class="flex flex-col md:flex-row items-center justify-between gap-12">
-                
-                <!-- 左側：情境文案引導 -->
                 <div class="w-full md:w-1/2 text-center md:text-left">
                     <div class="text-brand-gold text-xs tracking-[0.3em] font-bold uppercase mb-4">Life Concept</div>
                     <h2 class="font-serif text-3xl md:text-5xl mb-8 leading-tight text-white">光影流動<br>遇見美好生活</h2>
                     <div class="w-12 h-[1px] bg-brand-gold mx-auto md:mx-0 mb-8"></div>
                     <p class="text-gray-400 font-light tracking-widest leading-relaxed mb-8">
                         從清晨的微光到夜幕的靜謐，<br class="hidden md:block">
-                        點擊播放影片，感受「日初觀山」為您預留的<br class="hidden md:block">
+                        停留駐足，感受「日初觀山」為您預留的<br class="hidden md:block">
                         從容時光與大器空間尺度。
                     </p>
-                    <div class="inline-flex items-center text-sm text-brand-gold border border-brand-gold/50 px-6 py-2 rounded-full backdrop-blur-sm">
-                        <i class="ph-fill ph-play-circle text-xl mr-2"></i> 點擊右側影片觀賞
-                    </div>
                 </div>
-                
-                <!-- 右側：9:16 直式影片播放器 -->
                 <div class="w-full md:w-1/2 flex justify-center md:justify-end">
-                    <!-- 限制最大寬度並強制 9:16 比例 -->
                     <div class="relative w-full max-w-[320px] sm:max-w-[360px] aspect-[9/16] rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(193,160,110,0.15)] border border-white/10 group bg-black transition-transform hover:scale-[1.02] duration-500">
-                        <!-- 移除 controls，加上 id, muted, loop, playsinline，讓它能透過腳本自動播放 -->
                         <video id="brand-video" muted loop playsinline preload="metadata" class="w-full h-full object-cover">
-                            <!-- 中段區塊保留您原本的建案介紹影片 -->
                             <source src="日初觀山.mp4" type="video/mp4">
-                            您的瀏覽器不支援 HTML5 影片。
                         </video>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
 
     <!-- 720° VR 賞屋 -->
-    <section id="vr" class="py-24 bg-white">
+    <section id="vr" class="py-24 bg-white relative z-40">
         <div class="max-w-5xl mx-auto px-6 text-center reveal">
             <h2 class="font-serif text-3xl md:text-4xl mb-10 text-brand-dark">720° 全景沉浸式賞屋</h2>
             
-            <!-- VR 封面容器 (點擊後載入 iframe) -->
             <div id="vr-container" class="relative w-full aspect-video bg-gray-200 rounded-xl overflow-hidden shadow-2xl cursor-pointer group" onclick="loadVR()">
                 <img src="https://joanne82424250-maker.github.io/my-web/11.jpg" alt="VR封面" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                 <div class="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/20 transition-colors duration-300">
@@ -374,7 +372,6 @@
                 <p class="absolute bottom-6 left-1/2 -translate-x-1/2 text-white tracking-widest text-sm drop-shadow-md">點擊開啟高畫質 VR 導覽</p>
             </div>
             
-            <!-- iframe 預留區 (預設隱藏) -->
             <div id="vr-iframe-wrapper" class="hidden w-full aspect-video rounded-xl overflow-hidden shadow-2xl">
                 <iframe id="vr-iframe" src="" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
             </div>
@@ -386,10 +383,8 @@
     </section>
 
     <!-- 預約鑑賞 CTA & Footer -->
-    <section id="contact" class="py-24 bg-brand-dark text-white relative overflow-hidden">
-        <!-- 裝飾背景網格/紋理 -->
+    <section id="contact" class="py-24 bg-brand-dark text-white relative overflow-hidden z-40">
         <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]"></div>
-        
         <div class="max-w-4xl mx-auto px-6 relative z-10 text-center reveal">
             <h2 class="font-serif text-5xl md:text-6xl text-brand-gold mb-4">1880 萬起</h2>
             <p class="tracking-[0.2em] font-light mb-12 text-[#EAEFE8]">從日初開始，遇見一生的棲所。</p>
@@ -416,7 +411,7 @@
     </section>
 
     <!-- 底部版權 -->
-    <footer class="bg-[#1A1E19] text-center py-8 text-gray-500 text-xs tracking-widest border-t border-white/5">
+    <footer class="bg-[#1A1E19] text-center py-8 text-gray-500 text-xs tracking-widest border-t border-white/5 relative z-40">
         <p class="mb-2">© 2026 SHIAO LI CONSTRUCTION. ALL RIGHTS RESERVED.</p>
         <p>蕭立建設｜卓越美學・建築新高度</p>
     </footer>
@@ -429,7 +424,33 @@
 
     <!-- 腳本邏輯 -->
     <script>
-        // 1. 導覽列滾動背景變化
+        // --- 核心 1：滑鼠視差滾動效果 (Parallax) ---
+        document.addEventListener("mousemove", function(e) {
+            const heroSection = document.getElementById('parallax-hero');
+            // 只在滑鼠位於首圖區域內時才運算，節省效能
+            if (window.scrollY > heroSection.offsetHeight) return;
+            
+            const layers = document.querySelectorAll('.parallax-layer');
+            
+            // 計算滑鼠相對於螢幕中心的偏移量 (-1 到 1 之間)
+            const x = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
+            const y = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
+
+            layers.forEach(layer => {
+                const speed = layer.getAttribute('data-speed');
+                // 放大倍數，決定整體移動幅度 (100px)
+                const xPos = -(x * speed * 100); 
+                const yPos = -(y * speed * 100);
+                
+                // 使用 translate3d 開啟硬體加速，讓動畫更流暢
+                layer.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`;
+            });
+        });
+
+
+        // --- 核心 2：其他介面互動邏輯 ---
+        
+        // 導覽列滾動背景變化
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
             if (window.scrollY > 50) {
@@ -443,7 +464,7 @@
             }
         });
 
-        // 2. 滾動淡入動畫 (Scroll Reveal)
+        // 滾動淡入動畫 (Scroll Reveal)
         const revealElements = document.querySelectorAll('.reveal');
         const revealOptions = { threshold: 0.15, rootMargin: "0px 0px -50px 0px" };
         
@@ -451,13 +472,13 @@
             entries.forEach(entry => {
                 if (!entry.isIntersecting) return;
                 entry.target.classList.add('active');
-                observer.unobserve(entry.target); // 動畫只播放一次
+                observer.unobserve(entry.target);
             });
         }, revealOptions);
 
         revealElements.forEach(el => revealOnScroll.observe(el));
 
-        // 3. VR 延遲載入邏輯 (點擊後才載入 iframe，優化效能)
+        // VR 延遲載入
         function loadVR() {
             const container = document.getElementById('vr-container');
             const wrapper = document.getElementById('vr-iframe-wrapper');
@@ -468,16 +489,15 @@
             wrapper.classList.remove('hidden');
         }
 
-        // 4. Lightbox (圖片放大功能)
+        // Lightbox (圖片放大功能)
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
 
         function openLightbox(src) {
             lightboxImg.src = src;
             lightbox.classList.remove('hidden');
-            // 延遲一點點加上 opacity 為了讓 transition 生效
             setTimeout(() => { lightbox.classList.remove('opacity-0'); }, 10);
-            document.body.style.overflow = 'hidden'; // 防止背景滾動
+            document.body.style.overflow = 'hidden';
         }
 
         function closeLightbox() {
@@ -486,29 +506,25 @@
                 lightbox.classList.add('hidden'); 
                 lightboxImg.src = "";
             }, 300);
-            document.body.style.overflow = 'auto'; // 恢復背景滾動
+            document.body.style.overflow = 'auto';
         }
 
-        // 點擊背景也能關閉 Lightbox
         lightbox.addEventListener('click', (e) => {
             if (e.target === lightbox) closeLightbox();
         });
 
-        // 5. 品牌影片滾動至可見範圍時自動播放
+        // 直式影片滑動自動播放
         const brandVideo = document.getElementById('brand-video');
         if (brandVideo) {
             const videoObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        // 進入畫面時播放
-                        brandVideo.play().catch(err => console.log("自動播放被瀏覽器阻擋:", err));
+                        brandVideo.play().catch(err => console.log("播放被阻擋", err));
                     } else {
-                        // 離開畫面時暫停，節省效能
                         brandVideo.pause();
                     }
                 });
-            }, { threshold: 0.3 }); // 影片進入畫面 30% 時觸發
-            
+            }, { threshold: 0.3 });
             videoObserver.observe(brandVideo);
         }
     </script>
