@@ -16,7 +16,7 @@
     <!-- 引入 Phosphor Icons (精緻線條圖示) -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- Tailwind 自定義設定 -->
+    <!-- Tailwind 自定義設定 (新增極淺橄欖綠色調) -->
     <script>
         tailwind.config = {
             theme: {
@@ -28,13 +28,14 @@
                     colors: {
                         brand: {
                             gold: '#C1A06E',
-                            dark: '#1A1A1A',
+                            dark: '#2A3028', /* 深橄欖灰，取代純黑 */
                             gray: '#F8F8F8',
+                            olive: '#EAEFE8', /* 極淺橄欖綠，作為主背景色 */
                             light: '#FFFFFF'
                         }
                     },
                     boxShadow: {
-                        'soft': '0 20px 40px -15px rgba(0, 0, 0, 0.05)',
+                        'soft': '0 20px 40px -15px rgba(42, 48, 40, 0.08)',
                         'gold': '0 4px 14px 0 rgba(193, 160, 110, 0.39)',
                     }
                 }
@@ -46,7 +47,7 @@
     <style>
         /* 隱藏原生滾動條，自定義細緻滾動條 */
         ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-track { background: #EAEFE8; }
         ::-webkit-scrollbar-thumb { background: #C1A06E; border-radius: 3px; }
 
         /* 滾動淡入效果 */
@@ -85,10 +86,10 @@
         }
     </style>
 </head>
-<body class="font-sans text-gray-800 bg-brand-gray antialiased selection:bg-brand-gold selection:text-white">
+<body class="font-sans text-[#2A3028] bg-brand-olive antialiased selection:bg-brand-gold selection:text-white">
 
     <!-- Navbar 導覽列 -->
-    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur-md border-b border-gray-100 py-4">
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur-md border-b border-brand-olive py-4">
         <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
             <!-- Logo -->
             <a href="#" class="font-serif text-2xl font-bold tracking-widest text-brand-dark">日初觀山</a>
@@ -105,7 +106,7 @@
         </div>
     </nav>
 
-    <!-- 右側固定浮動社群與 AI (統整為低飽和度) -->
+    <!-- 右側固定浮動社群與 AI -->
     <div class="fixed right-4 top-1/2 -translate-y-1/2 z-40 flex flex-col space-y-4">
         <a href="#" class="w-10 h-10 bg-white shadow-soft rounded-full flex items-center justify-center text-gray-400 hover:text-green-500 hover:shadow-lg transition-all group">
             <i class="ph ph-chat-circle-text text-xl"></i>
@@ -127,12 +128,11 @@
         </a>
     </div>
 
-    <!-- 首屏 Hero Section (雲海日出影片背景) -->
+    <!-- 首屏 Hero Section (換回日初觀山影片循環播放) -->
     <section class="relative h-screen w-full overflow-hidden flex items-center justify-center">
-        <!-- 影片背景 (請確保影片檔案在同一層目錄) -->
+        <!-- 影片背景 (日初觀山.mp4) -->
         <video autoplay loop muted playsinline class="absolute top-0 left-0 w-full h-full object-cover z-0" poster="https://joanne82424250-maker.github.io/my-web/15.jpg">
-            <!-- 替換為剛上傳的壯麗雲海日出影片 -->
-            <source src="6989014-hd_1920_1080_25fps.mp4" type="video/mp4">
+            <source src="日初觀山.mp4" type="video/mp4">
             <!-- 影片無法載入時的降級圖片 -->
             <img src="https://joanne82424250-maker.github.io/my-web/15.jpg" alt="日初觀山" class="w-full h-full object-cover">
         </video>
@@ -156,7 +156,7 @@
     </section>
 
     <!-- 關於本案 Design Philosophy -->
-    <section id="about" class="py-24 md:py-32 bg-brand-gray relative">
+    <section id="about" class="py-24 md:py-32 bg-brand-olive relative">
         <div class="max-w-4xl mx-auto text-center px-6 reveal">
             <div class="text-brand-gold text-xs tracking-[0.3em] font-bold uppercase mb-6">Design Philosophy</div>
             <h2 class="font-serif text-3xl md:text-5xl leading-tight mb-10 text-brand-dark">
@@ -164,21 +164,21 @@
                 也給自己一個真正放鬆的家
             </h2>
             <div class="w-12 h-[1px] bg-brand-gold mx-auto mb-10"></div>
-            <p class="text-gray-500 font-light leading-relaxed tracking-wider md:text-lg">
+            <p class="text-[#555E51] font-light leading-relaxed tracking-wider md:text-lg">
                 理想的家，不該只是鋼筋水泥的構築，而是您對生活品質的溫柔理解。<br class="hidden md:block">
                 在溪湖核心，我們為您築起一座靜謐的人文棲所。
             </p>
         </div>
     </section>
 
-    <!-- 建築外觀 Exterior Art (不對稱破格佈局) -->
+    <!-- 建築外觀 Exterior Art -->
     <section id="exterior" class="py-24 bg-white overflow-hidden">
         <div class="max-w-7xl mx-auto px-6 flex flex-col lg:flex-row items-center reveal">
             <!-- 文字區塊 -->
             <div class="lg:w-5/12 z-10 lg:pr-10 mb-12 lg:mb-0">
                 <div class="text-brand-gold text-xs tracking-[0.3em] font-bold uppercase mb-4">Exterior Art</div>
                 <h2 class="font-serif text-4xl md:text-5xl mb-6 text-brand-dark leading-tight">日式現代建築<br>靜靜安放家的重量</h2>
-                <p class="text-gray-500 font-light leading-relaxed tracking-wider">
+                <p class="text-[#555E51] font-light leading-relaxed tracking-wider">
                     外觀採用洗鍊的水平線條，結合塗料、木格柵與木紋磚的溫潤質感，隨著日照轉移，光影在建築表面刻畫出不同的表情，展現出典雅而穩重的建築姿態。
                 </p>
             </div>
@@ -190,7 +190,7 @@
     </section>
 
     <!-- 大尺度規劃 Master Planning -->
-    <section id="planning" class="py-24 bg-brand-gray">
+    <section id="planning" class="py-24 bg-brand-olive">
         <div class="max-w-7xl mx-auto px-6 reveal">
             <div class="text-center mb-16">
                 <div class="text-brand-gold text-xs tracking-[0.3em] font-bold uppercase mb-4">Master Planning</div>
@@ -210,7 +210,7 @@
                         </div>
                         <div>
                             <h3 class="font-serif text-2xl text-brand-dark mb-2">60–90 坪大器尺度</h3>
-                            <p class="text-gray-500 font-light">為家庭預留最舒展的尺度，無論是三代同堂或是個人興趣空間，都能在此依然自在伸展。</p>
+                            <p class="text-[#555E51] font-light">為家庭預留最舒展的尺度，無論是三代同堂或是個人興趣空間，都能在此依然自在伸展。</p>
                         </div>
                     </div>
                     <div class="flex items-start">
@@ -219,7 +219,7 @@
                         </div>
                         <div>
                             <h3 class="font-serif text-2xl text-brand-dark mb-2">整層大主臥與尊榮電梯</h3>
-                            <p class="text-gray-500 font-light">結合現代無障礙動線設計，讓長輩移動無礙；整層主臥規劃，賦予男女主人極致的私密與舒適感。</p>
+                            <p class="text-[#555E51] font-light">結合現代無障礙動線設計，讓長輩移動無礙；整層主臥規劃，賦予男女主人極致的私密與舒適感。</p>
                         </div>
                     </div>
                     <div class="flex items-start">
@@ -228,7 +228,7 @@
                         </div>
                         <div>
                             <h3 class="font-serif text-2xl text-brand-dark mb-2">併排雙車位寬闊設計</h3>
-                            <p class="text-gray-500 font-light">5.2 - 6 米寬廣大面寬，愛車不需前後移車，從容出入，滿足高質感家庭的用車生活。</p>
+                            <p class="text-[#555E51] font-light">5.2 - 6 米寬廣大面寬，愛車不需前後移車，從容出入，滿足高質感家庭的用車生活。</p>
                         </div>
                     </div>
                 </div>
@@ -248,12 +248,12 @@
                 <div class="lg:w-7/12 img-container overflow-hidden z-0">
                     <img src="https://joanne82424250-maker.github.io/my-web/11.jpg" alt="臥室設計" class="w-full h-[500px] object-cover img-zoom">
                 </div>
-                <div class="lg:w-5/12 bg-brand-gray p-10 lg:p-16 overlap-text shadow-xl relative mt-[-50px] lg:mt-0">
+                <div class="lg:w-5/12 bg-brand-olive p-10 lg:p-16 overlap-text shadow-xl relative mt-[-50px] lg:mt-0">
                     <img src="https://joanne82424250-maker.github.io/my-web/10.jpg" alt="空間細節" class="w-full h-48 object-cover mb-8 shadow-sm">
                     <p class="font-serif text-xl leading-loose text-brand-dark text-justify">
                         「大面採光引入四時晨曦，讓光線在居家角落自在嬉戲。」
                     </p>
-                    <p class="mt-4 text-gray-500 font-light text-sm tracking-wider">
+                    <p class="mt-4 text-[#555E51] font-light text-sm tracking-wider">
                         精心挑選的溫潤木質與天然石材，在靜謐的空間中達到完美平衡。每一個轉角，都是為深度放鬆而生的美學場景。
                     </p>
                 </div>
@@ -261,19 +261,25 @@
         </div>
     </section>
 
-    <!-- 周邊環境 Strategic Location -->
+    <!-- 周邊環境 Strategic Location (替換為循環地圖動畫影片) -->
     <section id="location" class="py-24 bg-brand-dark text-white relative">
         <div class="max-w-7xl mx-auto px-6 reveal">
             <div class="text-center mb-16">
-                <h2 class="font-serif text-3xl md:text-4xl mb-4">繁華與安寧的交界</h2>
+                <h2 class="font-serif text-3xl md:text-4xl mb-4 text-[#EAEFE8]">繁華與安寧的交界</h2>
                 <p class="text-gray-400 font-light tracking-widest max-w-2xl mx-auto">
                     坐落於教育與機能的最佳交匯點。一邊是學風鼎盛的高中校園，一邊是靜謐繁榮的居住聚落。
                 </p>
             </div>
             
-            <div class="relative w-full rounded-xl overflow-hidden shadow-2xl border border-white/10 group">
-                <img src="https://joanne82424250-maker.github.io/my-web/15.jpg" alt="空拍位置圖" class="w-full h-auto opacity-80 group-hover:opacity-100 transition-opacity duration-700">
-                <!-- 動態熱點標註 (絕對定位範例，請依實際圖片調整 top/left) -->
+            <div class="relative w-full rounded-xl overflow-hidden shadow-2xl border border-white/10 group bg-black">
+                <!-- 替換原本的 15.jpg 為您上傳的地圖動態影片 -->
+                <video autoplay loop muted playsinline class="w-full h-auto opacity-80 group-hover:opacity-100 transition-opacity duration-700">
+                    <source src="jimeng-2026-02-24-6258-將這張圖片變成流暢的循環動畫地圖動畫Motion 開頭和結尾要一樣 要看起來有質....mp4" type="video/mp4">
+                    <!-- 影片無法載入時的降級圖片 -->
+                    <img src="https://joanne82424250-maker.github.io/my-web/15.jpg" alt="空拍位置圖" class="w-full h-auto">
+                </video>
+                
+                <!-- 動態熱點標註 (絕對定位範例) -->
                 <div class="absolute top-[45%] left-[48%] flex flex-col items-center">
                     <div class="w-4 h-4 bg-brand-gold rounded-full hotspot-pulse mb-1"></div>
                     <span class="bg-black/60 backdrop-blur text-white text-xs px-2 py-1 rounded tracking-wider border border-brand-gold/50">日初觀山</span>
@@ -287,9 +293,9 @@
     </section>
 
     <!-- 藝廊 Gallery (瀑布流) -->
-    <section class="py-24 bg-brand-gray">
+    <section class="py-24 bg-brand-olive">
         <div class="max-w-7xl mx-auto px-6 reveal">
-            <div class="flex justify-between items-end mb-12 border-b border-gray-200 pb-4">
+            <div class="flex justify-between items-end mb-12 border-b border-[#D5DDD2] pb-4">
                 <h2 class="font-serif text-3xl text-brand-dark">建築藝廊</h2>
                 <span class="text-brand-gold text-xs tracking-[0.2em] uppercase">Collection 2026</span>
             </div>
@@ -314,16 +320,16 @@
         </div>
     </section>
 
-    <!-- 品牌形象影片 Brand Concept Video (原建案展示影片) -->
-    <section class="py-24 bg-[#111] text-white overflow-hidden relative">
-        <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]"></div>
+    <!-- 品牌形象影片 Brand Concept Video -->
+    <section class="py-24 bg-brand-dark text-[#EAEFE8] overflow-hidden relative">
+        <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]"></div>
         <div class="max-w-6xl mx-auto px-6 relative z-10 reveal">
             <div class="flex flex-col md:flex-row items-center justify-between gap-12">
                 
                 <!-- 左側：情境文案引導 -->
                 <div class="w-full md:w-1/2 text-center md:text-left">
                     <div class="text-brand-gold text-xs tracking-[0.3em] font-bold uppercase mb-4">Life Concept</div>
-                    <h2 class="font-serif text-3xl md:text-5xl mb-8 leading-tight">光影流動<br>遇見美好生活</h2>
+                    <h2 class="font-serif text-3xl md:text-5xl mb-8 leading-tight text-white">光影流動<br>遇見美好生活</h2>
                     <div class="w-12 h-[1px] bg-brand-gold mx-auto md:mx-0 mb-8"></div>
                     <p class="text-gray-400 font-light tracking-widest leading-relaxed mb-8">
                         從清晨的微光到夜幕的靜謐，<br class="hidden md:block">
@@ -337,10 +343,10 @@
                 
                 <!-- 右側：9:16 直式影片播放器 -->
                 <div class="w-full md:w-1/2 flex justify-center md:justify-end">
-                    <!-- 限制最大寬度並強制 9:16 比例，加上高級光暈與圓角 -->
+                    <!-- 限制最大寬度並強制 9:16 比例 -->
                     <div class="relative w-full max-w-[320px] sm:max-w-[360px] aspect-[9/16] rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(193,160,110,0.15)] border border-white/10 group bg-black transition-transform hover:scale-[1.02] duration-500">
                         <!-- 帶控制條的播放器 -->
-                        <video controls playsinline preload="metadata" class="w-full h-full object-cover" poster="https://joanne82424250-maker.github.io/my-web/15.jpg">
+                        <video controls playsinline preload="metadata" class="w-full h-full object-cover">
                             <!-- 中段區塊保留您原本的建案介紹影片 -->
                             <source src="日初觀山.mp4" type="video/mp4">
                             您的瀏覽器不支援 HTML5 影片。
@@ -374,7 +380,7 @@
             </div>
             
             <div class="mt-8">
-                <a href="https://www.qwhouse720.com/tour/a04bf933b0b50a3f" target="_blank" class="text-sm text-gray-500 hover:text-brand-gold underline underline-offset-4 tracking-wider">在全螢幕新視窗開啟</a>
+                <a href="https://www.qwhouse720.com/tour/a04bf933b0b50a3f" target="_blank" class="text-sm text-[#555E51] hover:text-brand-gold underline underline-offset-4 tracking-wider">在全螢幕新視窗開啟</a>
             </div>
         </div>
     </section>
@@ -386,7 +392,7 @@
         
         <div class="max-w-4xl mx-auto px-6 relative z-10 text-center reveal">
             <h2 class="font-serif text-5xl md:text-6xl text-brand-gold mb-4">1880 萬起</h2>
-            <p class="tracking-[0.2em] font-light mb-12 text-gray-300">從日初開始，遇見一生的棲所。</p>
+            <p class="tracking-[0.2em] font-light mb-12 text-[#EAEFE8]">從日初開始，遇見一生的棲所。</p>
             
             <div class="bg-white/5 backdrop-blur-lg border border-white/10 p-8 md:p-12 rounded-lg flex flex-col md:flex-row justify-between items-center text-left mb-10">
                 <div class="mb-6 md:mb-0">
@@ -410,13 +416,13 @@
     </section>
 
     <!-- 底部版權 -->
-    <footer class="bg-[#111] text-center py-8 text-gray-600 text-xs tracking-widest border-t border-white/10">
+    <footer class="bg-[#1A1E19] text-center py-8 text-gray-500 text-xs tracking-widest border-t border-white/5">
         <p class="mb-2">© 2026 SHIAO LI CONSTRUCTION. ALL RIGHTS RESERVED.</p>
         <p>蕭立建設｜卓越美學・建築新高度</p>
     </footer>
 
     <!-- 圖片 Lightbox Modal -->
-    <div id="lightbox" class="fixed inset-0 z-[100] bg-black/95 hidden flex justify-center items-center opacity-0 transition-opacity duration-300">
+    <div id="lightbox" class="fixed inset-0 z-[100] bg-brand-dark/95 hidden flex justify-center items-center opacity-0 transition-opacity duration-300">
         <button onclick="closeLightbox()" class="absolute top-6 right-6 text-white text-4xl hover:text-brand-gold transition">&times;</button>
         <img id="lightbox-img" src="" alt="放大圖片" class="max-w-[90%] max-h-[90vh] object-contain rounded shadow-2xl">
     </div>
