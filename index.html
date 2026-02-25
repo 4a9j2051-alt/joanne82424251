@@ -1014,8 +1014,8 @@
         if (immersiveSection && canvas) {
             const ctx = canvas.getContext('2d');
             
-            // 設定您總共輸出的圖片數量 (ezgif-frame-001 ~ ezgif-frame-021 = 21 張)
-            const frameCount = 21;
+            // 設定您總共輸出的圖片數量 (ezgif-frame-001 ~ ezgif-frame-097 = 97 張)
+            const frameCount = 97;
             const images = [];
             
             // 固定畫布的繪製解析度 (這確保圖片以高畫質渲染，CSS 的 object-cover 會幫忙處理滿版)
@@ -1048,7 +1048,7 @@
                 // Lerp 平滑插值：讓 currentFrame 慢慢追上 targetFrame (數字越小越滑順，但也越延遲)
                 currentFrame += (targetFrame - currentFrame) * 0.15;
                 
-                // 取出實際要畫的陣列索引 (0 到 20)
+                // 取出實際要畫的陣列索引 (0 到 96)
                 const frameIndex = Math.max(0, Math.min(frameCount - 1, Math.round(currentFrame) - 1));
                 
                 // 確保該張圖片已經成功載入，才進行繪製
@@ -1069,7 +1069,7 @@
                 if (p >= -0.1 && p <= 1.1) {
                     p = Math.max(0, Math.min(1, p)); // 將進度限制在 0~1 之間
                     
-                    // 計算目標幀 (1 到 21)
+                    // 計算目標幀 (1 到 97)
                     targetFrame = 1 + (p * (frameCount - 1));
 
                     // 文字浮現邏輯控制
