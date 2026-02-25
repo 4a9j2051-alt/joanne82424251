@@ -54,29 +54,102 @@
 
         /* 隱藏原生滾動條 */
         ::-webkit-scrollbar { display: none; }
-        body { -ms-overflow-style: none; scrollbar-width: none; }
+        body { -ms-overflow-style: none; scrollbar-width: none; overflow-x: hidden; }
 
-        /* 電腦版隱藏預設游標 */
-        @media (hover: hover) and (pointer: fine) {
-            body, a, button, .cursor-pointer { cursor: none !important; }
+        /* 🌟 全域背景淡淡雲層動畫 🌟 */
+        #global-clouds {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.15; 
+            mix-blend-mode: multiply; 
         }
 
-        /* 🌟 3D 滑鼠視差專用層 (Parallax Layers) 🌟 */
+        /* 🌟 3D 滑鼠視差專用層 (首頁) 🌟 */
         .parallax-layer {
-            /* 讓圖層略大於視窗，防止移動時漏出邊緣 */
-            width: 110vw;
-            height: 110vh;
-            top: -5vh;
-            left: -5vw;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            object-fit: cover;
+            transform-origin: center;
             transition: transform 0.15s cubic-bezier(0.2, 0, 0.2, 1);
             will-change: transform;
         }
-        /* 若雲朵圖帶有黑底，使用 screen 模式可完美融合 */
         .blend-screen {
             mix-blend-mode: screen;
         }
 
-        /* 1. 圖片揭開動畫 (Image Reveal Wipe) 升級版 */
+        /* 🌟 雲層無限輪播動畫 (無縫流動) 🌟 */
+        @keyframes drift-left {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        @keyframes drift-right {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0%); }
+        }
+        .cloud-drift-left {
+            display: flex;
+            width: 200%;
+            animation: drift-left 120s linear infinite; 
+            will-change: transform;
+        }
+        .cloud-drift-right {
+            display: flex;
+            width: 200%;
+            animation: drift-right 90s linear infinite; 
+            will-change: transform;
+        }
+
+        /* 🌟🌟 首頁文字專屬電影級動畫 🌟🌟 */
+        @keyframes cinematic-reveal {
+            0% { 
+                opacity: 0; 
+                transform: translateY(50px) scale(0.9); 
+                filter: blur(20px); 
+            }
+            100% { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+                filter: blur(0); 
+            }
+        }
+        
+        .hero-title-anim {
+            opacity: 0; /* 初始隱藏 */
+            animation: cinematic-reveal 2.5s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s forwards;
+        }
+        .hero-subtitle-anim {
+            opacity: 0;
+            animation: cinematic-reveal 2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.8s forwards;
+        }
+        .hero-desc-anim {
+            opacity: 0;
+            animation: cinematic-reveal 2s cubic-bezier(0.2, 0.8, 0.2, 1) 1.2s forwards;
+        }
+
+        /* 🌟🌟 首頁文字持續呼吸/發光效果 🌟🌟 */
+        @keyframes slow-breathe {
+            0% { 
+                transform: translateY(0px) scale(1); 
+                opacity: 0.9; 
+            }
+            100% { 
+                transform: translateY(-8px) scale(1.02); 
+                opacity: 1; 
+                text-shadow: 0 0 40px rgba(193, 160, 110, 0.5); /* 帶點金色光暈 */
+            }
+        }
+        .continuous-breathe {
+            animation: slow-breathe 4s ease-in-out infinite alternate;
+        }
+
+        /* 1. 圖片揭開動畫 (Image Reveal Wipe) */
         .reveal-wipe-wrapper {
             position: relative;
             overflow: hidden;
@@ -86,7 +159,7 @@
             content: '';
             position: absolute;
             inset: -2px; 
-            background-color: #2A3028; /* 深色布幕更具電影感 */
+            background-color: #2A3028; 
             transform-origin: bottom;
             transition: transform 1.4s cubic-bezier(0.77, 0, 0.175, 1);
             z-index: 10;
@@ -172,7 +245,21 @@
         }
     </style>
 </head>
-<body class="font-sans text-[#2A3028] bg-brand-olive antialiased selection:bg-brand-gold selection:text-white">
+<body class="font-sans text-[#2A3028] bg-brand-olive antialiased selection:bg-brand-gold selection:text-white overflow-x-hidden w-full relative">
+
+    <!-- 🌟 全域背景淡淡雲層動畫 🌟 -->
+    <div id="global-clouds">
+        <!-- 第一層淡淡雲，向左飄 -->
+        <div class="absolute top-0 left-0 w-full h-full cloud-drift-left">
+            <img src="中間雲.png" onerror="this.src='中間雲.jpg'" class="w-1/2 h-full object-cover max-w-none opacity-50" alt="淡淡雲層">
+            <img src="中間雲.png" onerror="this.src='中間雲.jpg'" class="w-1/2 h-full object-cover max-w-none opacity-50" alt="淡淡雲層">
+        </div>
+        <!-- 第二層淡淡雲，向右飄 -->
+        <div class="absolute top-0 left-0 w-full h-full cloud-drift-right">
+             <img src="中景耀動的雲.png" onerror="this.src='中景耀動的雲.jpg'" class="w-1/2 h-full object-cover max-w-none opacity-40" alt="淡淡雲層">
+             <img src="中景耀動的雲.png" onerror="this.src='中景耀動的雲.jpg'" class="w-1/2 h-full object-cover max-w-none opacity-40" alt="淡淡雲層">
+        </div>
+    </div>
 
     <!-- ⏳ 頂部滾動進度條 -->
     <div id="scroll-progress" class="fixed top-0 left-0 w-full h-[3px] bg-brand-gold z-[100] origin-left scale-x-0"></div>
@@ -216,37 +303,53 @@
         </a>
     </div>
 
-    <!-- 🌟 首屏 Hero Section (3D 互動視差層疊) 🌟 -->
-    <section id="parallax-hero" class="relative h-screen w-full overflow-hidden bg-[#1A1C19] flex items-center justify-center">
-        
+    <!-- 🌟 首屏 Hero Section (3D 互動視差層疊 + 雙層動態雲) 🌟 -->
+    <section id="parallax-hero" class="relative h-screen w-full overflow-hidden bg-[#1A1C19] flex items-center justify-center z-10">
         <!-- 1. 背景層：移動最慢 (Z:0) -->
-        <img src="背景底圖.png" class="parallax-layer absolute object-cover z-0" data-speed="0.015" alt="背景底圖">
+        <img src="背景底圖.png" onerror="this.src='背景底圖.jpg'" class="parallax-layer absolute z-0" data-speed="0.015" alt="背景底圖">
         
-        <!-- 2. 中間雲：微透光層 (Z:10) -->
-        <img src="中間雲.png" class="parallax-layer blend-screen absolute object-cover opacity-80 z-10" data-speed="0.03" alt="中間雲">
-        
-        <!-- 3. 文字層：穿插於雲與前景山之間，稍微反向移動 (Z:20) -->
-        <div class="parallax-layer absolute z-20 flex flex-col items-center justify-center text-white pointer-events-none" data-speed="-0.02">
-            <h2 class="text-sm md:text-base uppercase tracking-[0.4em] text-brand-gold mb-6 font-light opacity-90 drop-shadow-md">Academic Elegance • Quiet Luxury</h2>
-            <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl font-semibold tracking-[0.1em] mb-8 drop-shadow-[0_10px_20px_rgba(0,0,0,0.6)]">日初觀山</h1>
-            <p class="text-lg md:text-2xl font-light tracking-[0.2em] mb-10 drop-shadow-md">溪湖高中旁 ・ 境美別墅聚落</p>
+        <!-- 2. 中間雲：微透光層 + 緩慢向左飄動 (Z:10) -->
+        <div class="parallax-layer absolute z-10 pointer-events-none" data-speed="0.03">
+            <div class="absolute top-0 left-0 h-full cloud-drift-left blend-screen opacity-60">
+                <img src="中間雲.png" onerror="this.src='中間雲.jpg'" class="w-1/2 h-full object-cover max-w-none" alt="中間雲">
+                <img src="中間雲.png" onerror="this.src='中間雲.jpg'" class="w-1/2 h-full object-cover max-w-none" alt="中間雲">
+            </div>
         </div>
 
-        <!-- 4. 前景山：移動幅度較大，創造出山體擋在文字前的錯覺 (Z:30) -->
-        <img src="前景山.png" class="parallax-layer absolute object-cover object-bottom z-30" data-speed="0.06" alt="前景山">
-
-        <!-- 5. 前景雲：最外層，移動速度最快，產生撲面而來的臨場感 (Z:40) -->
-        <img src="前景雲.png" class="parallax-layer blend-screen absolute object-cover object-bottom opacity-90 z-40 pointer-events-none" data-speed="0.09" alt="前景雲">
+        <!-- 3. 中景耀動的雲 + 持續向右飄動 (Z:15) -->
+        <div class="parallax-layer absolute z-[15] pointer-events-none" data-speed="0.04">
+            <div class="absolute top-0 left-0 h-full cloud-drift-right blend-screen opacity-90">
+                <img src="中景耀動的雲.png" onerror="this.src='中景耀動的雲.jpg'" class="w-1/2 h-full object-cover max-w-none" alt="中景耀動的雲">
+                <img src="中景耀動的雲.png" onerror="this.src='中景耀動的雲.jpg'" class="w-1/2 h-full object-cover max-w-none" alt="中景耀動的雲">
+            </div>
+        </div>
         
-        <!-- 向下滾動提示 -->
-        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-50 text-white flex flex-col items-center animate-bounce interactive-hover cursor-pointer opacity-80" data-cursor-text="DOWN" onclick="document.getElementById('about').scrollIntoView({behavior: 'smooth'})">
-            <span class="text-xs tracking-[0.3em] mb-2 uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Explore</span>
-            <i class="ph ph-caret-down text-xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"></i>
+        <!-- 4. 前景山：創造出山體深度 (Z:20) -->
+        <img src="前景山.png" onerror="this.src='前景山.jpg'" class="parallax-layer absolute object-bottom z-20" data-speed="0.06" alt="前景山">
+
+        <!-- 5. 前景雲：最外層，不受影響 (Z:30) -->
+        <img src="前景雲.png" onerror="this.src='前景雲.jpg'" class="parallax-layer blend-screen absolute object-bottom opacity-90 z-30 pointer-events-none" data-speed="0.09" alt="前景雲">
+        
+        <!-- 6. 文字層：加入電影級浮現 + 持續呼吸動態 (Z:40) -->
+        <div class="parallax-layer absolute z-40 flex flex-col items-center justify-center text-white pointer-events-none" data-speed="-0.02">
+            <!-- 內層包裝一個呼吸動畫，不會與外層的滑鼠視差衝突 -->
+            <div class="flex flex-col items-center justify-center continuous-breathe">
+                <h2 class="hero-subtitle-anim text-sm md:text-base uppercase tracking-[0.4em] text-brand-gold mb-6 font-light opacity-90 drop-shadow-md">Academic Elegance • Quiet Luxury</h2>
+                <h1 class="hero-title-anim font-serif text-5xl md:text-7xl lg:text-8xl font-semibold tracking-[0.1em] mb-8 drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]">日初觀山</h1>
+                <p class="hero-desc-anim text-lg md:text-2xl font-light tracking-[0.2em] mb-10 drop-shadow-md">溪湖高中旁 ・ 境美別墅聚落</p>
+            </div>
+        </div>
+
+        <div class="hero-desc-anim absolute bottom-10 left-1/2 -translate-x-1/2 z-50">
+            <div class="text-white flex flex-col items-center animate-bounce interactive-hover cursor-pointer opacity-80" data-cursor-text="DOWN" onclick="document.getElementById('about').scrollIntoView({behavior: 'smooth'})">
+                <span class="text-xs tracking-[0.3em] mb-2 uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Explore</span>
+                <i class="ph ph-caret-down text-xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"></i>
+            </div>
         </div>
     </section>
 
     <!-- 關於本案 Design Philosophy -->
-    <section id="about" class="py-32 md:py-48 bg-brand-olive relative z-40 overflow-hidden">
+    <section id="about" class="py-32 md:py-48 bg-brand-olive/80 relative z-10 overflow-hidden backdrop-blur-sm">
         <div class="max-w-4xl mx-auto text-center px-6 reveal">
             <div class="text-brand-gold text-xs tracking-[0.4em] font-bold uppercase mb-8">Design Philosophy</div>
             <h2 class="font-serif text-3xl md:text-5xl leading-tight mb-12 text-brand-dark">
@@ -262,7 +365,7 @@
     </section>
 
     <!-- 建築外觀 Exterior Art -->
-    <section id="exterior" class="py-24 bg-white overflow-hidden relative z-40">
+    <section id="exterior" class="py-24 bg-white/90 overflow-hidden relative z-10 backdrop-blur-md">
         <div class="max-w-7xl mx-auto px-6 flex flex-col lg:flex-row items-center reveal">
             <div class="lg:w-5/12 z-10 lg:pr-10 mb-12 lg:mb-0">
                 <div class="text-brand-gold text-xs tracking-[0.3em] font-bold uppercase mb-4">Exterior Art</div>
@@ -279,7 +382,7 @@
     </section>
 
     <!-- 大尺度規劃 Master Planning -->
-    <section id="planning" class="py-32 bg-brand-olive relative z-40">
+    <section id="planning" class="py-32 bg-brand-olive/80 relative z-10 backdrop-blur-sm">
         <div class="max-w-7xl mx-auto px-6 reveal">
             <div class="text-center mb-20">
                 <div class="text-brand-gold text-xs tracking-[0.3em] font-bold uppercase mb-4">Master Planning</div>
@@ -319,7 +422,7 @@
     </section>
 
     <!-- 空間美學 Space Harmony -->
-    <section class="py-32 bg-white overflow-hidden relative z-40">
+    <section class="py-32 bg-white/90 overflow-hidden relative z-10 backdrop-blur-md">
         <div class="max-w-7xl mx-auto px-6 reveal">
             <div class="text-center mb-16">
                 <div class="text-brand-gold text-xs tracking-[0.3em] font-bold uppercase mb-4">Space Harmony</div>
@@ -346,7 +449,7 @@
     </section>
 
     <!-- 周邊環境 Strategic Location -->
-    <section id="location" class="py-32 bg-[#1C201A] text-white relative z-40">
+    <section id="location" class="py-32 bg-[#1C201A]/90 text-white relative z-10 backdrop-blur-sm">
         <div class="max-w-7xl mx-auto px-6 reveal">
             <div class="text-center mb-20">
                 <h2 class="font-serif text-4xl md:text-5xl mb-6 text-[#EAEFE8]">繁華與安寧的交界</h2>
@@ -369,7 +472,7 @@
     </section>
 
     <!-- 藝廊 Gallery -->
-    <section class="py-32 bg-brand-olive relative z-40">
+    <section class="py-32 bg-brand-olive/80 relative z-10 backdrop-blur-sm">
         <div class="max-w-7xl mx-auto px-6 reveal">
             <div class="flex justify-between items-end mb-16 border-b border-[#D5DDD2] pb-6">
                 <h2 class="font-serif text-4xl text-brand-dark">建築藝廊</h2>
@@ -394,7 +497,7 @@
     </section>
 
     <!-- 品牌形象影片 Brand Concept Video -->
-    <section class="py-32 bg-[#151814] text-[#EAEFE8] overflow-hidden relative z-40">
+    <section class="py-32 bg-[#151814]/90 text-[#EAEFE8] overflow-hidden relative z-10 backdrop-blur-sm">
         <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]"></div>
         <div class="max-w-6xl mx-auto px-6 relative z-10 reveal">
             <div class="flex flex-col md:flex-row items-center justify-between gap-16">
@@ -420,7 +523,7 @@
     </section>
 
     <!-- 720° VR 賞屋 -->
-    <section id="vr" class="py-32 bg-white relative z-40">
+    <section id="vr" class="py-32 bg-white/90 relative z-10 backdrop-blur-md">
         <div class="max-w-5xl mx-auto px-6 text-center reveal">
             <h2 class="font-serif text-4xl md:text-5xl mb-12 text-brand-dark">720° 全景沉浸式賞屋</h2>
             
@@ -440,7 +543,7 @@
     </section>
 
     <!-- 預約鑑賞 CTA -->
-    <section id="contact" class="py-32 bg-brand-dark text-white relative overflow-hidden z-40">
+    <section id="contact" class="py-32 bg-brand-dark/90 text-white relative overflow-hidden z-10 backdrop-blur-sm">
         <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]"></div>
         <div class="max-w-4xl mx-auto px-6 relative z-10 text-center reveal">
             <!-- 數字跳動計數器 -->
@@ -471,7 +574,7 @@
     </section>
 
     <!-- 底部版權 -->
-    <footer class="bg-[#111310] text-center py-10 text-gray-600 text-xs tracking-[0.2em] border-t border-white/5 relative z-40">
+    <footer class="bg-[#111310]/95 text-center py-10 text-gray-600 text-xs tracking-[0.2em] border-t border-white/5 relative z-10 backdrop-blur-md">
         <p class="mb-3">© 2026 SHIAO LI CONSTRUCTION. ALL RIGHTS RESERVED.</p>
         <p>蕭立建設｜卓越美學・建築新高度</p>
     </footer>
@@ -512,24 +615,22 @@
         requestAnimationFrame(raf);
 
 
-        // --- 🌟 2. 首頁滑鼠 3D 視差效果 (Parallax Layers) ---
+        // --- 🌟 2. 首頁滑鼠 3D 視差效果 (防漏邊完美版) ---
         document.addEventListener("mousemove", function(e) {
             const heroSection = document.getElementById('parallax-hero');
             if (!heroSection) return;
-            // 只在首屏範圍內才進行運算，節省效能
             if (window.scrollY > heroSection.offsetHeight) return;
             
             const layers = document.querySelectorAll('.parallax-layer');
-            // 計算滑鼠座標偏移量 (-1 到 1)
             const x = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
             const y = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
 
             layers.forEach(layer => {
                 const speed = layer.getAttribute('data-speed');
-                // 放大倍數 (150px) 創造更深遠的 3D 透視感
                 const xPos = -(x * speed * 150); 
                 const yPos = -(y * speed * 150);
-                layer.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`;
+                
+                layer.style.transform = `translate3d(${xPos}px, ${yPos}px, 0) scale(1.1)`;
             });
         });
 
