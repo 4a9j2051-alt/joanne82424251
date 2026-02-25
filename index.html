@@ -56,6 +56,11 @@
         ::-webkit-scrollbar { display: none; }
         body { -ms-overflow-style: none; scrollbar-width: none; overflow-x: hidden; }
 
+        /* 🌟 強制全域隱藏電腦版預設游標，解決雙游標問題 🌟 */
+        @media (hover: hover) and (pointer: fine) {
+            *, *::before, *::after { cursor: none !important; }
+        }
+
         /* 🌟 全域背景淡淡雲層動畫 🌟 */
         #global-clouds {
             position: fixed;
@@ -258,22 +263,22 @@
         </div>
     </div>
 
-    <!-- 🌟 全域背景淡淡雲層動畫 🌟 -->
+    <!-- 🌟 全域背景淡淡雲層動畫 (加入 this.onerror=null 防止無限轉圈) 🌟 -->
     <div id="global-clouds">
         <!-- 第一層淡淡雲，向左飄 -->
         <div class="absolute top-0 left-0 w-full h-full cloud-drift-left">
-            <img src="中間雲.png" onerror="this.src='中間雲.jpg'" class="w-1/2 h-full object-cover max-w-none opacity-50" alt="淡淡雲層">
-            <img src="中間雲.png" onerror="this.src='中間雲.jpg'" class="w-1/2 h-full object-cover max-w-none opacity-50" alt="淡淡雲層">
+            <img src="中間雲.png" onerror="this.onerror=null; this.src='中間雲.jpg'" class="w-1/2 h-full object-cover max-w-none opacity-50" alt="淡淡雲層">
+            <img src="中間雲.png" onerror="this.onerror=null; this.src='中間雲.jpg'" class="w-1/2 h-full object-cover max-w-none opacity-50" alt="淡淡雲層">
         </div>
         <!-- 第二層淡淡雲，向右飄 -->
         <div class="absolute top-0 left-0 w-full h-full cloud-drift-right">
-             <img src="中景耀動的雲.png" onerror="this.src='中景耀動的雲.jpg'" class="w-1/2 h-full object-cover max-w-none opacity-40" alt="淡淡雲層">
-             <img src="中景耀動的雲.png" onerror="this.src='中景耀動的雲.jpg'" class="w-1/2 h-full object-cover max-w-none opacity-40" alt="淡淡雲層">
+             <img src="中景耀動的雲.png" onerror="this.onerror=null; this.src='中景耀動的雲.jpg'" class="w-1/2 h-full object-cover max-w-none opacity-40" alt="淡淡雲層">
+             <img src="中景耀動的雲.png" onerror="this.onerror=null; this.src='中景耀動的雲.jpg'" class="w-1/2 h-full object-cover max-w-none opacity-40" alt="淡淡雲層">
         </div>
     </div>
 
-    <!-- ⏳ 頂部滾動進度條 -->
-    <div id="scroll-progress" class="fixed top-0 left-0 w-full h-[3px] bg-brand-gold z-[100] origin-left scale-x-0 transition-transform duration-75"></div>
+    <!-- ⏳ 頂部滾動進度條 (提高 z-index 至 9999 確保不被導覽列遮擋，並加厚至 4px) -->
+    <div id="scroll-progress" class="fixed top-0 left-0 w-full h-[4px] bg-brand-gold z-[9999] origin-left scale-x-0 transition-transform duration-75 pointer-events-none"></div>
 
     <!-- 🖱️ 自訂游標 (僅電腦版顯示) -->
     <div id="custom-cursor" class="hidden md:flex">
@@ -344,37 +349,40 @@
 
     <!-- 🌟 首屏 Hero Section (3D 互動視差層疊 + 雙層動態雲) 🌟 -->
     <section id="parallax-hero" class="relative h-screen w-full overflow-hidden bg-[#1A1C19] flex items-center justify-center z-10">
-        <!-- 1. 背景層：移動最慢 (Z:0) -->
-        <img src="背景底圖.png" onerror="this.src='背景底圖.jpg'" class="parallax-layer absolute z-0" data-speed="0.015" alt="背景底圖">
+        <!-- 1. 背景層：移動最慢 (Z:0) (加入 this.onerror=null 防止無限轉圈) -->
+        <img src="背景底圖.png" onerror="this.onerror=null; this.src='背景底圖.jpg'" class="parallax-layer absolute z-0" data-speed="0.015" alt="背景底圖">
         
         <!-- 2. 中間雲：微透光層 + 緩慢向左飄動 (Z:10) -->
         <div class="parallax-layer absolute z-10 pointer-events-none" data-speed="0.03">
             <div class="absolute top-0 left-0 h-full cloud-drift-left blend-screen opacity-60">
-                <img src="中間雲.png" onerror="this.src='中間雲.jpg'" class="w-1/2 h-full object-cover max-w-none" alt="中間雲">
-                <img src="中間雲.png" onerror="this.src='中間雲.jpg'" class="w-1/2 h-full object-cover max-w-none" alt="中間雲">
+                <img src="中間雲.png" onerror="this.onerror=null; this.src='中間雲.jpg'" class="w-1/2 h-full object-cover max-w-none" alt="中間雲">
+                <img src="中間雲.png" onerror="this.onerror=null; this.src='中間雲.jpg'" class="w-1/2 h-full object-cover max-w-none" alt="中間雲">
             </div>
         </div>
 
         <!-- 3. 中景耀動的雲 + 持續向右飄動 (Z:15) -->
         <div class="parallax-layer absolute z-[15] pointer-events-none" data-speed="0.04">
             <div class="absolute top-0 left-0 h-full cloud-drift-right blend-screen opacity-90">
-                <img src="中景耀動的雲.png" onerror="this.src='中景耀動的雲.jpg'" class="w-1/2 h-full object-cover max-w-none" alt="中景耀動的雲">
-                <img src="中景耀動的雲.png" onerror="this.src='中景耀動的雲.jpg'" class="w-1/2 h-full object-cover max-w-none" alt="中景耀動的雲">
+                <img src="中景耀動的雲.png" onerror="this.onerror=null; this.src='中景耀動的雲.jpg'" class="w-1/2 h-full object-cover max-w-none" alt="中景耀動的雲">
+                <img src="中景耀動的雲.png" onerror="this.onerror=null; this.src='中景耀動的雲.jpg'" class="w-1/2 h-full object-cover max-w-none" alt="中景耀動的雲">
             </div>
         </div>
         
         <!-- 4. 前景山：創造出山體深度 (Z:20) -->
-        <img src="前景山.png" onerror="this.src='前景山.jpg'" class="parallax-layer absolute object-bottom z-20" data-speed="0.06" alt="前景山">
+        <img src="前景山.png" onerror="this.onerror=null; this.src='前景山.jpg'" class="parallax-layer absolute object-bottom z-20" data-speed="0.06" alt="前景山">
 
         <!-- 5. 前景雲：最外層，不受影響 (Z:30) -->
-        <img src="前景雲.png" onerror="this.src='前景雲.jpg'" class="parallax-layer blend-screen absolute object-bottom opacity-90 z-30 pointer-events-none" data-speed="0.09" alt="前景雲">
+        <img src="前景雲.png" onerror="this.onerror=null; this.src='前景雲.jpg'" class="parallax-layer blend-screen absolute object-bottom opacity-90 z-30 pointer-events-none" data-speed="0.09" alt="前景雲">
         
-        <!-- 6. 文字層：加入電影級浮現 + 持續呼吸動態 (Z:40) -->
+        <!-- 6. 文字層/標題動畫層：加入電影級浮現 + 持續呼吸動態 (Z:40) -->
         <div class="parallax-layer absolute z-40 flex flex-col items-center justify-center text-white pointer-events-none" data-speed="-0.02">
             <!-- 內層包裝一個呼吸動畫，不會與外層的滑鼠視差衝突 -->
             <div class="flex flex-col items-center justify-center continuous-breathe">
                 <h2 class="hero-subtitle-anim text-sm md:text-base uppercase tracking-[0.4em] text-brand-gold mb-6 font-light opacity-90 drop-shadow-md">Academic Elegance • Quiet Luxury</h2>
-                <h1 class="hero-title-anim font-serif text-5xl md:text-7xl lg:text-8xl font-semibold tracking-[0.1em] mb-8 drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]">日初觀山</h1>
+                
+                <!-- 將原本的影片替換為透明去背 GIF 動畫，完美支援所有瀏覽器 -->
+                <img src="日初觀山首頁文字.gif" class="hero-title-anim h-24 md:h-32 lg:h-48 mb-8 object-contain drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]" alt="日初觀山">
+
                 <p class="hero-desc-anim text-lg md:text-2xl font-light tracking-[0.2em] mb-10 drop-shadow-md">溪湖高中旁 ・ 境美別墅聚落</p>
             </div>
         </div>
