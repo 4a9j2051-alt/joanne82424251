@@ -61,7 +61,84 @@
             *, *::before, *::after { cursor: none !important; }
         }
 
-        /* 🌟 全域背景淡淡雲層動畫 🌟 */
+        /* =========================================
+           🌟 白金質感動態星軌 (Premium Preloader) 🌟
+           ========================================= */
+        .orbit-container {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100vw; height: 100vh;
+            perspective: 1000px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 0;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+        .orbit-wrapper {
+            position: absolute;
+            transform-style: preserve-3d;
+        }
+        /* 調整 3D 傾斜角度創造深邃交錯感 */
+        .orbit-w1 { transform: rotateX(72deg) rotateY(-25deg); width: 280px; height: 280px; }
+        .orbit-w2 { transform: rotateX(65deg) rotateY(30deg); width: 450px; height: 450px; }
+        .orbit-w3 { transform: rotateX(78deg) rotateY(5deg); width: 620px; height: 620px; }
+
+        .orbit-ring {
+            width: 100%; height: 100%;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 245, 225, 0.03); /* 極細微的底線 */
+            position: relative;
+            animation: orbit-spin linear infinite;
+            transform-style: preserve-3d;
+        }
+        /* 三條軌道不同轉速與方向 */
+        .orbit-w1 .orbit-ring { animation-duration: 4s; }
+        .orbit-w2 .orbit-ring { animation-duration: 7s; animation-direction: reverse; }
+        .orbit-w3 .orbit-ring { animation-duration: 12s; }
+
+        /* 發光拖尾邊緣 (白金質感) */
+        .orbit-ring::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 50%;
+            border: 1px solid transparent;
+            border-top-color: rgba(255, 240, 210, 0.8);
+            border-right-color: rgba(255, 240, 210, 0.15);
+            filter: drop-shadow(0 0 8px rgba(230, 210, 170, 0.6));
+        }
+
+        /* 軌道上的高亮光點 */
+        .orbit-dot {
+            position: absolute;
+            top: 0; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 3px; height: 3px;
+            background: #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 0 15px 4px rgba(255, 240, 210, 0.9), 0 0 30px 8px rgba(193, 160, 110, 0.5);
+        }
+
+        @keyframes orbit-spin {
+            0% { transform: rotateZ(0deg); }
+            100% { transform: rotateZ(360deg); }
+        }
+
+        /* 中心文字的光暈呼吸 */
+        .preloader-glow {
+            animation: text-glow 2s ease-in-out infinite alternate;
+        }
+        @keyframes text-glow {
+            0% { filter: drop-shadow(0 0 10px rgba(193, 160, 110, 0.2)); }
+            100% { filter: drop-shadow(0 0 25px rgba(255, 240, 210, 0.6)); }
+        }
+
+        /* =========================================
+           🌟 全域背景淡淡雲層動畫 🌟
+           ========================================= */
         #global-clouds {
             position: fixed;
             top: 0;
@@ -127,7 +204,6 @@
         
         .hero-title-anim {
             opacity: 0;
-            /* 延遲時間增加，等待 Preloader 拉開後才浮現 */
             animation: cinematic-reveal 2.5s cubic-bezier(0.2, 0.8, 0.2, 1) 2.5s forwards;
         }
         .hero-subtitle-anim {
@@ -206,37 +282,6 @@
             will-change: transform;
         }
 
-        /* 🌟 自訂游標 (反差融合效果) 🌟 */
-        #custom-cursor {
-            position: fixed;
-            top: 0; left: 0;
-            width: 20px; height: 20px;
-            background-color: #fff;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 99999;
-            transform: translate(-50%, -50%);
-            transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1), height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            mix-blend-mode: difference; 
-        }
-        #custom-cursor.cursor-hover {
-            width: 80px; height: 80px;
-        }
-        #cursor-text {
-            color: #000;
-            font-size: 11px;
-            letter-spacing: 0.15em;
-            opacity: 0;
-            transition: opacity 0.3s;
-            font-weight: 600;
-        }
-        #custom-cursor.cursor-hover #cursor-text {
-            opacity: 1;
-        }
-
         /* 脈衝圓點動畫 */
         @keyframes pulse-ring {
             0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(193, 160, 110, 0.7); }
@@ -254,36 +299,50 @@
 <body class="font-sans text-[#2A3028] bg-brand-olive antialiased selection:bg-brand-gold selection:text-white overflow-x-hidden w-full relative">
 
     <!-- ⏳ 品牌載入畫面 (Premium Preloader) ⏳ -->
-    <div id="preloader" class="fixed inset-0 z-[99998] bg-[#1A1C19] flex flex-col items-center justify-center transition-transform duration-1000 ease-[cubic-bezier(0.77,0,0.175,1)]">
-        <div class="overflow-hidden">
-            <h1 id="preloader-text" class="font-serif text-3xl md:text-5xl tracking-[0.4em] text-brand-gold translate-y-full transition-transform duration-[1.5s] ease-[cubic-bezier(0.16,1,0.3,1)]">日初觀山</h1>
+    <div id="preloader" class="fixed inset-0 z-[99998] bg-[#0A0B0A] flex flex-col items-center justify-center transition-transform duration-1000 ease-[cubic-bezier(0.77,0,0.175,1)] overflow-hidden">
+        
+        <!-- 3D 白金環繞星軌動畫層 -->
+        <div id="preloader-orbits" class="orbit-container">
+            <div class="orbit-wrapper orbit-w1">
+                <div class="orbit-ring"><div class="orbit-dot"></div></div>
+            </div>
+            <div class="orbit-wrapper orbit-w2">
+                <div class="orbit-ring"><div class="orbit-dot"></div></div>
+            </div>
+            <div class="orbit-wrapper orbit-w3">
+                <div class="orbit-ring"><div class="orbit-dot"></div></div>
+            </div>
         </div>
-        <div class="w-48 h-[1px] bg-white/10 mt-8 relative overflow-hidden">
-            <div id="preloader-bar" class="absolute top-0 left-0 h-full bg-brand-gold w-0 transition-all duration-[2s] ease-[cubic-bezier(0.16,1,0.3,1)]"></div>
+
+        <!-- 中心文字層 -->
+        <div class="relative z-10 flex flex-col items-center">
+            <div class="overflow-hidden pb-2">
+                <h1 id="preloader-text" class="font-serif text-3xl md:text-5xl tracking-[0.4em] text-brand-gold translate-y-full transition-transform duration-[1.5s] ease-[cubic-bezier(0.16,1,0.3,1)] preloader-glow">日初觀山</h1>
+            </div>
+            <div class="overflow-hidden mt-4">
+                <div id="preloader-subtext" class="text-[10px] text-white/50 tracking-[0.5em] uppercase translate-y-full transition-transform duration-[1.5s] ease-[cubic-bezier(0.16,1,0.3,1)] delay-300">
+                    Premium Residence
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- 🌟 全域背景淡淡雲層動畫 (加入 this.onerror=null 防止無限轉圈) 🌟 -->
+    <!-- 🌟 全域背景淡淡雲層動畫 (線上替換版) 🌟 -->
     <div id="global-clouds">
         <!-- 第一層淡淡雲，向左飄 -->
         <div class="absolute top-0 left-0 w-full h-full cloud-drift-left">
-            <img src="中間雲.png" onerror="this.onerror=null; this.src='中間雲.jpg'" class="w-1/2 h-full object-cover max-w-none opacity-50" alt="淡淡雲層">
-            <img src="中間雲.png" onerror="this.onerror=null; this.src='中間雲.jpg'" class="w-1/2 h-full object-cover max-w-none opacity-50" alt="淡淡雲層">
+            <img src="https://images.unsplash.com/photo-1516214104703-d870798883c5?auto=format&fit=crop&q=80&w=1000" class="w-1/2 h-full object-cover max-w-none opacity-30 mix-blend-screen" alt="淡淡雲層">
+            <img src="https://images.unsplash.com/photo-1516214104703-d870798883c5?auto=format&fit=crop&q=80&w=1000" class="w-1/2 h-full object-cover max-w-none opacity-30 mix-blend-screen" alt="淡淡雲層">
         </div>
         <!-- 第二層淡淡雲，向右飄 -->
         <div class="absolute top-0 left-0 w-full h-full cloud-drift-right">
-             <img src="中景耀動的雲.png" onerror="this.onerror=null; this.src='中景耀動的雲.jpg'" class="w-1/2 h-full object-cover max-w-none opacity-40" alt="淡淡雲層">
-             <img src="中景耀動的雲.png" onerror="this.onerror=null; this.src='中景耀動的雲.jpg'" class="w-1/2 h-full object-cover max-w-none opacity-40" alt="淡淡雲層">
+             <img src="https://images.unsplash.com/photo-1509803874385-db7c23652552?auto=format&fit=crop&q=80&w=1000" class="w-1/2 h-full object-cover max-w-none opacity-20 mix-blend-screen" alt="淡淡雲層">
+             <img src="https://images.unsplash.com/photo-1509803874385-db7c23652552?auto=format&fit=crop&q=80&w=1000" class="w-1/2 h-full object-cover max-w-none opacity-20 mix-blend-screen" alt="淡淡雲層">
         </div>
     </div>
 
-    <!-- ⏳ 頂部滾動進度條 (提高 z-index 至 9999 確保不被導覽列遮擋，並加厚至 4px) -->
+    <!-- ⏳ 頂部滾動進度條 -->
     <div id="scroll-progress" class="fixed top-0 left-0 w-full h-[4px] bg-brand-gold z-[9999] origin-left scale-x-0 transition-transform duration-75 pointer-events-none"></div>
-
-    <!-- 🖱️ 自訂游標 (僅電腦版顯示) -->
-    <div id="custom-cursor" class="hidden md:flex">
-        <span id="cursor-text"></span>
-    </div>
 
     <!-- Navbar 導覽列 -->
     <nav id="navbar" class="fixed w-full z-[100] transition-all duration-500 bg-white/90 backdrop-blur-md border-b border-brand-olive py-5">
@@ -323,7 +382,7 @@
     </div>
 
     <!-- 右側固定浮動社群與 AI -->
-    <div class="fixed right-4 top-1/2 -translate-y-1/2 z-40 flex flex-col space-y-4 hidden md:flex"> <!-- 手機版可考慮隱藏側邊欄以免干擾 -->
+    <div class="fixed right-4 top-1/2 -translate-y-1/2 z-40 flex flex-col space-y-4 hidden md:flex">
         <a href="https://line.me/R/ti/p/@786gomje" target="_blank" class="interactive-hover w-10 h-10 bg-white shadow-soft rounded-full flex items-center justify-center text-gray-400 hover:text-green-500 hover:shadow-lg transition-all group">
             <i class="ph ph-chat-circle-text text-xl"></i>
             <span class="absolute right-12 bg-white px-2 py-1 text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">LINE 客服</span>
@@ -347,43 +406,45 @@
         </a>
     </div>
 
-    <!-- 🌟 首屏 Hero Section (3D 互動視差層疊 + 雙層動態雲) 🌟 -->
+    <!-- 🌟 首屏 Hero Section (3D 互動視差層疊 + 您指定的圖層) 🌟 -->
     <section id="parallax-hero" class="relative h-screen w-full overflow-hidden bg-[#1A1C19] flex items-center justify-center z-10">
-        <!-- 1. 背景層：移動最慢 (Z:0) (加入 this.onerror=null 防止無限轉圈) -->
-        <img src="背景底圖.png" onerror="this.onerror=null; this.src='背景底圖.jpg'" class="parallax-layer absolute z-0" data-speed="0.015" alt="背景底圖">
         
-        <!-- 2. 中間雲：微透光層 + 緩慢向左飄動 (Z:10) -->
-        <div class="parallax-layer absolute z-10 pointer-events-none" data-speed="0.03">
-            <div class="absolute top-0 left-0 h-full cloud-drift-left blend-screen opacity-60">
+        <!-- 1. 背景底圖：最底層，移動最慢 (Z:0) -->
+        <img src="背景底圖.png" onerror="this.onerror=null; this.src='背景底圖.jpg'" class="parallax-layer absolute z-0 object-cover opacity-90" data-speed="0.015" alt="背景底圖">
+        
+        <!-- 2. 中間雲：微透光層 + 向左飄動 + 滑鼠視差跟隨 (Z:10) -->
+        <div class="parallax-layer absolute z-10 pointer-events-none" data-speed="0.035">
+            <div class="absolute top-0 left-0 h-full cloud-drift-left mix-blend-screen opacity-70">
                 <img src="中間雲.png" onerror="this.onerror=null; this.src='中間雲.jpg'" class="w-1/2 h-full object-cover max-w-none" alt="中間雲">
                 <img src="中間雲.png" onerror="this.onerror=null; this.src='中間雲.jpg'" class="w-1/2 h-full object-cover max-w-none" alt="中間雲">
             </div>
         </div>
 
-        <!-- 3. 中景耀動的雲 + 持續向右飄動 (Z:15) -->
-        <div class="parallax-layer absolute z-[15] pointer-events-none" data-speed="0.04">
-            <div class="absolute top-0 left-0 h-full cloud-drift-right blend-screen opacity-90">
+        <!-- 2.5. 中景耀動的雲：新增圖層，向右飄動，介於中間雲與前景山之間 (Z:15) -->
+        <div class="parallax-layer absolute z-[15] pointer-events-none" data-speed="0.045">
+            <div class="absolute top-0 left-0 h-full cloud-drift-right mix-blend-screen opacity-60">
                 <img src="中景耀動的雲.png" onerror="this.onerror=null; this.src='中景耀動的雲.jpg'" class="w-1/2 h-full object-cover max-w-none" alt="中景耀動的雲">
                 <img src="中景耀動的雲.png" onerror="this.onerror=null; this.src='中景耀動的雲.jpg'" class="w-1/2 h-full object-cover max-w-none" alt="中景耀動的雲">
             </div>
         </div>
-        
-        <!-- 4. 前景山：創造出山體深度 (Z:20) -->
+
+        <!-- 3. 前景山：實體山脈，移動速度中等，創造出深度 (Z:20) -->
         <img src="前景山.png" onerror="this.onerror=null; this.src='前景山.jpg'" class="parallax-layer absolute object-bottom z-20" data-speed="0.06" alt="前景山">
 
-        <!-- 5. 前景雲：最外層，不受影響 (Z:30) -->
-        <img src="前景雲.png" onerror="this.onerror=null; this.src='前景雲.jpg'" class="parallax-layer blend-screen absolute object-bottom opacity-90 z-30 pointer-events-none" data-speed="0.09" alt="前景雲">
+        <!-- 4. 前景雲：最外層雲朵，移動最快，增強 3D 空間感 (Z:30) -->
+        <div class="parallax-layer absolute z-30 pointer-events-none" data-speed="0.1">
+            <div class="absolute top-0 left-0 h-full cloud-drift-right mix-blend-screen opacity-90">
+                <img src="前景雲.png" onerror="this.onerror=null; this.src='前景雲.jpg'" class="w-1/2 h-full object-cover max-w-none" alt="前景雲">
+                <img src="前景雲.png" onerror="this.onerror=null; this.src='前景雲.jpg'" class="w-1/2 h-full object-cover max-w-none" alt="前景雲">
+            </div>
+        </div>
         
-        <!-- 6. 文字層/標題動畫層：加入電影級浮現 + 持續呼吸動態 (Z:40) -->
+        <!-- 5. 文字層/標題動畫層：懸浮於一切之上 (Z:40) -->
         <div class="parallax-layer absolute z-40 flex flex-col items-center justify-center text-white pointer-events-none" data-speed="-0.02">
-            <!-- 內層包裝一個呼吸動畫，不會與外層的滑鼠視差衝突 -->
             <div class="flex flex-col items-center justify-center continuous-breathe">
                 <h2 class="hero-subtitle-anim text-sm md:text-base uppercase tracking-[0.4em] text-brand-gold mb-6 font-light opacity-90 drop-shadow-md">Academic Elegance • Quiet Luxury</h2>
-                
-                <!-- 將原本的影片替換為透明去背 GIF 動畫，完美支援所有瀏覽器 -->
-                <img src="日初觀山首頁文字.gif" class="hero-title-anim h-24 md:h-32 lg:h-48 mb-8 object-contain drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]" alt="日初觀山">
-
-                <p class="hero-desc-anim text-lg md:text-2xl font-light tracking-[0.2em] mb-10 drop-shadow-md">溪湖高中旁 ・ 境美別墅聚落</p>
+                <img src="日初觀山首頁文字.gif" class="hero-title-anim h-20 md:h-32 lg:h-48 mb-8 object-contain mix-blend-screen drop-shadow-[0_15px_30px_rgba(0,0,0,0.8)]" alt="日初觀山">
+                <p class="hero-desc-anim text-lg md:text-2xl font-light tracking-[0.2em] mb-10 drop-shadow-[0_5px_15px_rgba(0,0,0,0.9)]">溪湖高中旁 ・ 境美別墅聚落</p>
             </div>
         </div>
 
@@ -506,11 +567,12 @@
             </div>
             
             <div class="relative w-full rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/5 group bg-black reveal-wipe-wrapper reveal interactive-hover tilt-card" data-cursor-text="MAP">
+                <!-- 替換為指定的地圖動畫影片 -->
                 <video autoplay loop muted playsinline class="w-full h-auto opacity-70 group-hover:opacity-100 transition-opacity duration-1000">
                     <source src="jimeng-2026-02-24-6258-將這張圖片變成流暢的循環動畫地圖動畫Motion 開頭和結尾要一樣 要看起來有質....mp4" type="video/mp4">
                     <img src="https://joanne82424250-maker.github.io/my-web/15.jpg" alt="空拍位置圖" class="w-full h-auto">
                 </video>
-                <div class="absolute top-[45%] left-[48%] flex flex-col items-center pointer-events-none">
+                <div class="absolute top-[68%] left-[55%] flex flex-col items-center pointer-events-none">
                     <div class="w-5 h-5 bg-brand-gold rounded-full hotspot-pulse mb-2"></div>
                     <span class="bg-black/60 backdrop-blur-md text-white text-xs px-3 py-1.5 rounded tracking-widest border border-brand-gold/30">日初觀山</span>
                 </div>
@@ -560,7 +622,8 @@
                 </div>
                 <div class="w-full md:w-1/2 flex justify-center md:justify-end">
                     <div class="relative w-full max-w-[320px] sm:max-w-[400px] aspect-[9/16] rounded-2xl overflow-hidden shadow-[0_0_80px_rgba(193,160,110,0.2)] border border-brand-gold/20 group bg-black reveal-wipe-wrapper reveal tilt-card interactive-hover" data-cursor-text="PLAY">
-                        <video id="brand-video" muted loop playsinline preload="metadata" class="w-full h-full object-cover">
+                        <!-- 替換為指定的直式建築影片 -->
+                        <video id="brand-video" autoplay muted loop playsinline preload="metadata" class="w-full h-full object-cover">
                             <source src="日初觀山.mp4" type="video/mp4">
                         </video>
                     </div>
@@ -668,24 +731,38 @@
             lenis.stop();
             document.body.style.overflow = 'hidden';
 
-            // 步驟1：文字浮出、進度光束開始跑
+            // 步驟1：文字浮出、軌道淡入開始旋轉
             setTimeout(() => {
                 document.getElementById('preloader-text').classList.remove('translate-y-full');
-                document.getElementById('preloader-bar').style.width = '100%';
+                const subtext = document.getElementById('preloader-subtext');
+                if(subtext) subtext.classList.remove('translate-y-full');
+                
+                const orbits = document.getElementById('preloader-orbits');
+                if(orbits) orbits.style.opacity = '1';
             }, 100);
 
-            // 步驟2：2.5秒後，載入畫面向上拉開
+            // 步驟2：準備退場前的軌道縮放淡出效果 (讓轉場更絲滑)
+            setTimeout(() => {
+                const orbits = document.getElementById('preloader-orbits');
+                if(orbits) {
+                    orbits.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                    orbits.style.opacity = '0';
+                    orbits.style.transition = 'all 1s cubic-bezier(0.16, 1, 0.3, 1)';
+                }
+            }, 2000);
+
+            // 步驟3：載入畫面向上拉開
             setTimeout(() => {
                 const preloader = document.getElementById('preloader');
                 preloader.style.transform = 'translateY(-100%)';
                 
-                // 步驟3：拉開完畢後，移除 DOM 並恢復頁面滾動
+                // 步驟4：拉開完畢後，移除 DOM 並恢復頁面滾動
                 setTimeout(() => {
                     preloader.remove();
                     lenis.start();
                     document.body.style.overflow = '';
                 }, 1000);
-            }, 2500); 
+            }, 2800); // 稍微延長一點時間讓星軌跑完動畫
         });
 
 
@@ -809,38 +886,88 @@
         });
 
 
-        // --- 7. 反差融合自訂游標 ---
-        const cursor = document.getElementById('custom-cursor');
-        const cursorText = document.getElementById('cursor-text');
-        
+        // --- 7. 圓形跟隨 (Trailing Circles) 自訂游標 ---
         if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-            let mouseX = 0, mouseY = 0;
-            let cursorX = 0, cursorY = 0;
-            const speed = 0.15; 
+            // 動態創建殘影游標的容器
+            const cursorContainer = document.createElement('div');
+            cursorContainer.id = 'cursor-container';
+            cursorContainer.className = 'hidden md:block pointer-events-none fixed inset-0 z-[99999] mix-blend-difference';
+            document.body.appendChild(cursorContainer);
+
+            const dotCount = 7; // 1個主游標 + 6個殘影圓點
+            const dots = [];
+            const pos = [];
+
+            // 建立圓點陣列
+            for (let i = 0; i < dotCount; i++) {
+                const dot = document.createElement('div');
+                // 🌟 加入 rounded-full 變成圓形
+                // 🌟 背景色設定為金色的「互補色」 #3E5F91
+                // 這樣在 mix-blend-difference 模式下與白底相減，就會變成完美的品牌金 #C1A06E！
+                dot.className = 'absolute top-0 left-0 bg-[#3E5F91] rounded-full flex items-center justify-center will-change-transform';
+                dot.style.zIndex = 100 - i; // 確保主游標(0)在最上層
+                
+                if (i === 0) {
+                    // 主游標
+                    dot.classList.add('w-4', 'h-4', 'transition-all', 'duration-300', 'ease-out');
+                    dot.id = 'main-cursor';
+                    const text = document.createElement('span');
+                    text.id = 'cursor-text';
+                    // 白字在差值模式下遇到白底會反轉成黑字，在金底上非常清晰
+                    text.className = 'text-white text-[11px] tracking-[0.15em] opacity-0 transition-opacity duration-300 font-bold whitespace-nowrap';
+                    dot.appendChild(text);
+                } else {
+                    // 殘影圓點
+                    dot.classList.add('w-4', 'h-4');
+                    dot.style.opacity = 1 - (i * 0.12); // 越後面的殘影越透明，增加層次感
+                }
+                
+                cursorContainer.appendChild(dot);
+                dots.push(dot);
+                pos.push({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
+            }
+
+            let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
 
             window.addEventListener('mousemove', (e) => {
                 mouseX = e.clientX;
                 mouseY = e.clientY;
             });
 
+            // 物理跟隨運算引擎
             function animateCursor() {
-                cursorX += (mouseX - cursorX) * speed;
-                cursorY += (mouseY - cursorY) * speed;
-                cursor.style.transform = `translate(${cursorX}px, ${cursorY}px)`;
+                // 1. 更新主游標 (稍微緩衝)
+                pos[0].x += (mouseX - pos[0].x) * 0.35;
+                pos[0].y += (mouseY - pos[0].y) * 0.35;
+                dots[0].style.transform = `translate3d(${pos[0].x}px, ${pos[0].y}px, 0) translate(-50%, -50%)`;
+
+                // 2. 更新殘影 (每一個方塊追著前一個方塊跑)
+                for (let i = 1; i < dotCount; i++) {
+                    pos[i].x += (pos[i-1].x - pos[i].x) * 0.5;
+                    pos[i].y += (pos[i-1].y - pos[i].y) * 0.5;
+                    dots[i].style.transform = `translate3d(${pos[i].x}px, ${pos[i].y}px, 0) translate(-50%, -50%)`;
+                }
                 requestAnimationFrame(animateCursor);
             }
             animateCursor();
 
+            // 處理滑鼠懸停特定元素時的放大展開效果
             const interactives = document.querySelectorAll('.interactive-hover');
+            const mainCursor = dots[0];
+            const cursorText = document.getElementById('cursor-text');
+
             interactives.forEach(el => {
                 el.addEventListener('mouseenter', () => {
-                    cursor.classList.add('cursor-hover');
+                    mainCursor.classList.remove('w-4', 'h-4');
+                    mainCursor.classList.add('w-20', 'h-20');
                     const text = el.getAttribute('data-cursor-text');
                     if(text) cursorText.innerText = text;
+                    cursorText.classList.remove('opacity-0');
                 });
                 el.addEventListener('mouseleave', () => {
-                    cursor.classList.remove('cursor-hover');
-                    cursorText.innerText = '';
+                    mainCursor.classList.add('w-4', 'h-4');
+                    mainCursor.classList.remove('w-20', 'h-20');
+                    cursorText.classList.add('opacity-0');
                 });
             });
         }
