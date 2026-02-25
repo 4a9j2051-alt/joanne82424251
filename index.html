@@ -249,12 +249,12 @@
         .reveal-wipe-wrapper.active::after {
             transform: scaleY(0);
         }
-        .reveal-wipe-wrapper img, .reveal-wipe-wrapper video {
+        .reveal-wipe-wrapper img, .reveal-wipe-wrapper video, .reveal-wipe-wrapper canvas {
             transform: scale(1.2);
             transition: transform 2s cubic-bezier(0.2, 0, 0.2, 1);
             will-change: transform;
         }
-        .reveal-wipe-wrapper.active img, .reveal-wipe-wrapper.active video {
+        .reveal-wipe-wrapper.active img, .reveal-wipe-wrapper.active video, .reveal-wipe-wrapper.active canvas {
             transform: scale(1);
         }
 
@@ -556,8 +556,27 @@
         </div>
     </section>
 
+    <!-- 🌟 Apple 級神流暢：序列圖 Canvas 滾動區塊 🌟 -->
+    <!-- 高度設定為 400vh，給使用者足夠的滾動距離來播放這 21 張圖 -->
+    <section id="immersive-scroll" class="relative bg-black w-full z-10 interactive-hover" data-cursor-text="SCROLL" style="height: 400vh;">
+        <!-- 使用 sticky 將畫布固定在螢幕上，直到滾動完畢才放開 -->
+        <div class="sticky top-0 left-0 w-full h-screen overflow-hidden flex items-center justify-center">
+            
+            <!-- 將原本的 video 替換為 canvas，CSS 屬性使用 object-cover 可自動滿版裁切 -->
+            <canvas id="scroll-bound-canvas" class="w-full h-full object-cover opacity-90"></canvas>
+            
+            <!-- 文字與遮罩層保持不變 -->
+            <div id="scroll-video-overlay" class="absolute inset-0 bg-black/60 pointer-events-none transition-opacity duration-700"></div>
+            <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                <h2 id="scroll-video-text" class="font-serif text-4xl md:text-6xl text-white tracking-[0.3em] opacity-0 transition-all duration-700 translate-y-10 drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)] text-center leading-relaxed">
+                    穿梭空間的<br class="md:hidden">極致工藝
+                </h2>
+            </div>
+        </div>
+    </section>
+
     <!-- 周邊環境 Strategic Location -->
-    <section id="location" class="py-32 bg-[#1C201A]/90 text-white relative z-10 backdrop-blur-sm">
+    <section id="location" class="py-32 bg-[#1C201A]/90 text-white relative z-10 backdrop-blur-sm border-t border-white/10">
         <div class="max-w-7xl mx-auto px-6 reveal">
             <div class="text-center mb-20">
                 <h2 class="font-serif text-4xl md:text-5xl mb-6 text-[#EAEFE8]">繁華與安寧的交界</h2>
@@ -727,11 +746,9 @@
 
         // --- ⏳ 2. 品牌載入畫面 (Premium Preloader) 邏輯 ---
         window.addEventListener('DOMContentLoaded', () => {
-            // 載入期間暫停背景滾動，並強制隱藏 body 滾動條 (預防手機端滑動)
             lenis.stop();
             document.body.style.overflow = 'hidden';
 
-            // 步驟1：文字浮出、軌道淡入開始旋轉
             setTimeout(() => {
                 document.getElementById('preloader-text').classList.remove('translate-y-full');
                 const subtext = document.getElementById('preloader-subtext');
@@ -741,7 +758,6 @@
                 if(orbits) orbits.style.opacity = '1';
             }, 100);
 
-            // 步驟2：準備退場前的軌道縮放淡出效果 (讓轉場更絲滑)
             setTimeout(() => {
                 const orbits = document.getElementById('preloader-orbits');
                 if(orbits) {
@@ -751,18 +767,16 @@
                 }
             }, 2000);
 
-            // 步驟3：載入畫面向上拉開
             setTimeout(() => {
                 const preloader = document.getElementById('preloader');
                 preloader.style.transform = 'translateY(-100%)';
                 
-                // 步驟4：拉開完畢後，移除 DOM 並恢復頁面滾動
                 setTimeout(() => {
                     preloader.remove();
                     lenis.start();
                     document.body.style.overflow = '';
                 }, 1000);
-            }, 2800); // 稍微延長一點時間讓星軌跑完動畫
+            }, 2800); 
         });
 
 
@@ -777,26 +791,22 @@
         mobileMenuBtn.addEventListener('click', () => {
             isMenuOpen = !isMenuOpen;
             if (isMenuOpen) {
-                // 打開選單
                 mobileMenuIcon.classList.remove('ph-list');
                 mobileMenuIcon.classList.add('ph-x');
                 
                 mobileMenuOverlay.classList.remove('opacity-0', 'pointer-events-none');
                 lenis.stop();
-                document.body.style.overflow = 'hidden'; // 防止手機背部滑動
+                document.body.style.overflow = 'hidden';
                 
-                // 讓導覽列背景變透明，以免跟毛玻璃重疊太厚
                 navbar.classList.add('bg-transparent');
                 navbar.classList.remove('bg-white/90', 'backdrop-blur-md', 'shadow-lg');
 
-                // 連結逐條浮現動畫
                 mobileLinks.forEach((link, index) => {
                     setTimeout(() => {
                         link.classList.remove('translate-y-6', 'opacity-0');
-                    }, 100 * index); // 產生階梯式延遲
+                    }, 100 * index);
                 });
             } else {
-                // 關閉選單
                 mobileMenuIcon.classList.remove('ph-x');
                 mobileMenuIcon.classList.add('ph-list');
                 
@@ -804,12 +814,10 @@
                 lenis.start();
                 document.body.style.overflow = '';
                 
-                // 連結狀態重置
                 mobileLinks.forEach(link => {
                     link.classList.add('translate-y-6', 'opacity-0');
                 });
 
-                // 恢復導覽列背景
                 navbar.classList.remove('bg-transparent');
                 if (window.scrollY > 50) {
                     navbar.classList.add('bg-white/95', 'backdrop-blur-md', 'shadow-lg');
@@ -819,7 +827,6 @@
             }
         });
 
-        // 點擊選單內的連結後，自動關閉選單
         mobileLinks.forEach(link => {
             link.addEventListener('click', () => {
                 if (isMenuOpen) mobileMenuBtn.click();
@@ -888,38 +895,30 @@
 
         // --- 7. 圓形跟隨 (Trailing Circles) 自訂游標 ---
         if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-            // 動態創建殘影游標的容器
             const cursorContainer = document.createElement('div');
             cursorContainer.id = 'cursor-container';
             cursorContainer.className = 'hidden md:block pointer-events-none fixed inset-0 z-[99999] mix-blend-difference';
             document.body.appendChild(cursorContainer);
 
-            const dotCount = 7; // 1個主游標 + 6個殘影圓點
+            const dotCount = 7; 
             const dots = [];
             const pos = [];
 
-            // 建立圓點陣列
             for (let i = 0; i < dotCount; i++) {
                 const dot = document.createElement('div');
-                // 🌟 加入 rounded-full 變成圓形
-                // 🌟 背景色設定為金色的「互補色」 #3E5F91
-                // 這樣在 mix-blend-difference 模式下與白底相減，就會變成完美的品牌金 #C1A06E！
                 dot.className = 'absolute top-0 left-0 bg-[#3E5F91] rounded-full flex items-center justify-center will-change-transform';
-                dot.style.zIndex = 100 - i; // 確保主游標(0)在最上層
+                dot.style.zIndex = 100 - i;
                 
                 if (i === 0) {
-                    // 主游標
                     dot.classList.add('w-4', 'h-4', 'transition-all', 'duration-300', 'ease-out');
                     dot.id = 'main-cursor';
                     const text = document.createElement('span');
                     text.id = 'cursor-text';
-                    // 白字在差值模式下遇到白底會反轉成黑字，在金底上非常清晰
                     text.className = 'text-white text-[11px] tracking-[0.15em] opacity-0 transition-opacity duration-300 font-bold whitespace-nowrap';
                     dot.appendChild(text);
                 } else {
-                    // 殘影圓點
                     dot.classList.add('w-4', 'h-4');
-                    dot.style.opacity = 1 - (i * 0.12); // 越後面的殘影越透明，增加層次感
+                    dot.style.opacity = 1 - (i * 0.12);
                 }
                 
                 cursorContainer.appendChild(dot);
@@ -934,14 +933,11 @@
                 mouseY = e.clientY;
             });
 
-            // 物理跟隨運算引擎
             function animateCursor() {
-                // 1. 更新主游標 (稍微緩衝)
                 pos[0].x += (mouseX - pos[0].x) * 0.35;
                 pos[0].y += (mouseY - pos[0].y) * 0.35;
                 dots[0].style.transform = `translate3d(${pos[0].x}px, ${pos[0].y}px, 0) translate(-50%, -50%)`;
 
-                // 2. 更新殘影 (每一個方塊追著前一個方塊跑)
                 for (let i = 1; i < dotCount; i++) {
                     pos[i].x += (pos[i-1].x - pos[i].x) * 0.5;
                     pos[i].y += (pos[i-1].y - pos[i].y) * 0.5;
@@ -951,7 +947,6 @@
             }
             animateCursor();
 
-            // 處理滑鼠懸停特定元素時的放大展開效果
             const interactives = document.querySelectorAll('.interactive-hover');
             const mainCursor = dots[0];
             const cursorText = document.getElementById('cursor-text');
@@ -1010,9 +1005,90 @@
         if(counterEl) counterObserver.observe(counterEl);
 
 
+        // --- 🌟 10. Apple 級極致絲滑：序列圖 Canvas 控制 (Image Sequence Scroll) 🌟 ---
+        const immersiveSection = document.getElementById('immersive-scroll');
+        const canvas = document.getElementById('scroll-bound-canvas');
+        const scrollVideoText = document.getElementById('scroll-video-text');
+        const scrollVideoOverlay = document.getElementById('scroll-video-overlay');
+
+        if (immersiveSection && canvas) {
+            const ctx = canvas.getContext('2d');
+            
+            // 設定您總共輸出的圖片數量 (ezgif-frame-001 ~ ezgif-frame-021 = 21 張)
+            const frameCount = 21;
+            const images = [];
+            
+            // 固定畫布的繪製解析度 (這確保圖片以高畫質渲染，CSS 的 object-cover 會幫忙處理滿版)
+            canvas.width = 1920; 
+            canvas.height = 1080;
+
+            // 預載入所有的序列圖
+            for (let i = 1; i <= frameCount; i++) {
+                const img = new Image();
+                // 動態生成檔名：ezgif-frame-001.png, ezgif-frame-002.png ...
+                // 註：若您的圖片實際是 png 檔，請將這裡的 .jpg 改為 .png 即可！
+                const frameNum = i.toString().padStart(3, '0');
+                img.src = `ezgif-frame-${frameNum}.png`; 
+                
+                img.onload = () => {
+                    // 當第一張圖載入完成時，立刻畫上去，避免畫面一開始全黑
+                    if (i === 1) {
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    }
+                };
+                images.push(img);
+            }
+
+            // 為了平滑過渡，我們設定「目標幀」與「當前幀」進行物理運算
+            let targetFrame = 1;
+            let currentFrame = 1;
+
+            // 核心繪圖引擎
+            function renderScrollCanvas() {
+                // Lerp 平滑插值：讓 currentFrame 慢慢追上 targetFrame (數字越小越滑順，但也越延遲)
+                currentFrame += (targetFrame - currentFrame) * 0.15;
+                
+                // 取出實際要畫的陣列索引 (0 到 20)
+                const frameIndex = Math.max(0, Math.min(frameCount - 1, Math.round(currentFrame) - 1));
+                
+                // 確保該張圖片已經成功載入，才進行繪製
+                if (images[frameIndex] && images[frameIndex].complete) {
+                    ctx.drawImage(images[frameIndex], 0, 0, canvas.width, canvas.height);
+                }
+                
+                requestAnimationFrame(renderScrollCanvas);
+            }
+            requestAnimationFrame(renderScrollCanvas);
+
+            // 監聽滾動事件，將滾動進度對應到第幾張圖片
+            window.addEventListener('scroll', () => {
+                const start = immersiveSection.offsetTop;
+                const distance = immersiveSection.offsetHeight - window.innerHeight;
+                let p = (window.scrollY - start) / distance;
+
+                if (p >= -0.1 && p <= 1.1) {
+                    p = Math.max(0, Math.min(1, p)); // 將進度限制在 0~1 之間
+                    
+                    // 計算目標幀 (1 到 21)
+                    targetFrame = 1 + (p * (frameCount - 1));
+
+                    // 文字浮現邏輯控制
+                    if (p > 0.15 && p < 0.85) {
+                        scrollVideoText.style.opacity = '1';
+                        scrollVideoText.style.transform = 'translateY(0)';
+                        scrollVideoOverlay.style.opacity = '0.4'; 
+                    } else {
+                        scrollVideoText.style.opacity = '0';
+                        scrollVideoText.style.transform = 'translateY(20px)';
+                        scrollVideoOverlay.style.opacity = '0.7'; 
+                    }
+                }
+            });
+        }
+
         // --- 導覽列變化 ---
         window.addEventListener('scroll', () => {
-            if (isMenuOpen) return; // 如果手機選單開著，不要改變 navbar 樣式
+            if (isMenuOpen) return; 
             if (window.scrollY > 50) {
                 navbar.classList.add('shadow-lg', 'bg-white/95');
                 navbar.classList.remove('py-5', 'bg-white/90');
