@@ -231,27 +231,15 @@
             animation: slow-breathe 4s ease-in-out infinite alternate;
         }
 
-        /* 1. 圖片揭開動畫 (Image Reveal Wipe) */
+        /* 1. 圖片揭開動畫 (移除色塊遮罩，改為優雅淡入與微縮放) */
         .reveal-wipe-wrapper {
             position: relative;
             overflow: hidden;
             transform-style: preserve-3d;
         }
-        .reveal-wipe-wrapper::after {
-            content: '';
-            position: absolute;
-            inset: -2px; 
-            background-color: #2A3028; 
-            transform-origin: bottom;
-            transition: transform 1.4s cubic-bezier(0.77, 0, 0.175, 1);
-            z-index: 10;
-        }
-        .reveal-wipe-wrapper.active::after {
-            transform: scaleY(0);
-        }
         .reveal-wipe-wrapper img, .reveal-wipe-wrapper video, .reveal-wipe-wrapper canvas {
-            transform: scale(1.2);
-            transition: transform 2s cubic-bezier(0.2, 0, 0.2, 1);
+            transform: scale(1.1); /* 微調放大比例，讓進場更自然柔和 */
+            transition: transform 1.5s cubic-bezier(0.2, 0, 0.2, 1);
             will-change: transform;
         }
         .reveal-wipe-wrapper.active img, .reveal-wipe-wrapper.active video, .reveal-wipe-wrapper.active canvas {
