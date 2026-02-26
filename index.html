@@ -470,8 +470,8 @@
                     外觀採用洗鍊的水平線條，結合塗料、木格柵與木紋磚的溫潤質感，隨著日照轉移，光影在建築表面刻畫出不同的表情，展現出典雅而穩重的建築姿態。
                 </p>
             </div>
-            <!-- 🖼️ 3D 傾斜 + 遮罩揭開 -->
-            <div class="lg:w-7/12 w-full overlap-img relative rounded-sm reveal-wipe-wrapper reveal tilt-card interactive-hover" data-cursor-text="DRAG">
+            <!-- 🖼️ 3D 傾斜 + 點擊放大滿版 (Lightbox) -->
+            <div class="lg:w-7/12 w-full overlap-img relative rounded-sm reveal-wipe-wrapper reveal tilt-card interactive-hover cursor-pointer" data-cursor-text="VIEW" onclick="openLightbox('https://joanne82424250-maker.github.io/my-web/3.jpg')">
                 <img src="https://joanne82424250-maker.github.io/my-web/3.jpg" alt="日式現代建築外觀" class="w-full h-auto object-cover shadow-[0_20px_50px_rgba(0,0,0,0.2)]">
             </div>
         </div>
@@ -486,8 +486,8 @@
             </div>
             
             <div class="flex flex-col lg:flex-row gap-16 items-center">
-                <!-- 🖼️ 3D 傾斜 -->
-                <div class="lg:w-1/2 rounded reveal-wipe-wrapper reveal tilt-card interactive-hover" data-cursor-text="SPACE">
+                <!-- 🖼️ 3D 傾斜 + 點擊放大滿版 (Lightbox) -->
+                <div class="lg:w-1/2 rounded reveal-wipe-wrapper reveal tilt-card interactive-hover cursor-pointer" data-cursor-text="VIEW" onclick="openLightbox('https://joanne82424250-maker.github.io/my-web/4.jpg')">
                     <img src="https://joanne82424250-maker.github.io/my-web/4.jpg" alt="透視規劃" class="w-full h-auto shadow-[0_20px_50px_rgba(0,0,0,0.15)]">
                 </div>
                 <div class="lg:w-1/2 space-y-12">
@@ -526,11 +526,13 @@
             </div>
             
             <div class="flex flex-col lg:flex-row items-center">
-                <div class="lg:w-7/12 z-0 reveal-wipe-wrapper reveal tilt-card interactive-hover" data-cursor-text="RELAX">
+                <!-- 🖼️ 點擊放大滿版 (Lightbox) -->
+                <div class="lg:w-7/12 z-0 reveal-wipe-wrapper reveal tilt-card interactive-hover cursor-pointer" data-cursor-text="VIEW" onclick="openLightbox('https://joanne82424250-maker.github.io/my-web/11.jpg')">
                     <img src="https://joanne82424250-maker.github.io/my-web/11.jpg" alt="臥室設計" class="w-full h-[600px] object-cover shadow-2xl">
                 </div>
                 <div class="lg:w-5/12 bg-brand-olive p-10 lg:p-16 overlap-text shadow-[0_30px_60px_rgba(0,0,0,0.1)] relative mt-[-50px] lg:mt-0 reveal">
-                    <div class="w-full h-56 mb-10 shadow-md reveal-wipe-wrapper reveal tilt-card">
+                    <!-- 🖼️ 點擊放大滿版 (Lightbox) -->
+                    <div class="w-full h-56 mb-10 shadow-md reveal-wipe-wrapper reveal tilt-card interactive-hover cursor-pointer" data-cursor-text="VIEW" onclick="openLightbox('https://joanne82424250-maker.github.io/my-web/10.jpg')">
                         <img src="https://joanne82424250-maker.github.io/my-web/10.jpg" alt="空間細節" class="w-full h-full object-cover">
                     </div>
                     <p class="font-serif text-2xl leading-loose text-brand-dark text-justify">
@@ -545,15 +547,10 @@
     </section>
 
     <!-- 🌟 Apple 級神流暢：序列圖 Canvas 滾動區塊 🌟 -->
-    <!-- 高度設定為 400vh，給使用者足夠的滾動距離來播放這 21 張圖 -->
     <section id="immersive-scroll" class="relative bg-black w-full z-10 interactive-hover" data-cursor-text="SCROLL" style="height: 400vh;">
-        <!-- 使用 sticky 將畫布固定在螢幕上，直到滾動完畢才放開 -->
         <div class="sticky top-0 left-0 w-full h-screen overflow-hidden flex items-center justify-center">
-            
-            <!-- 將原本的 video 替換為 canvas，CSS 屬性使用 object-cover 可自動滿版裁切 -->
             <canvas id="scroll-bound-canvas" class="w-full h-full object-cover opacity-90"></canvas>
             
-            <!-- 文字與遮罩層保持不變 -->
             <div id="scroll-video-overlay" class="absolute inset-0 bg-black/60 pointer-events-none transition-opacity duration-700"></div>
             <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                 <h2 id="scroll-video-text" class="font-serif text-4xl md:text-6xl text-white tracking-[0.3em] opacity-0 transition-all duration-700 translate-y-10 drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)] text-center leading-relaxed">
@@ -574,7 +571,6 @@
             </div>
             
             <div class="relative w-full rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/5 group bg-black reveal-wipe-wrapper reveal interactive-hover tilt-card" data-cursor-text="MAP">
-                <!-- 替換為指定的地圖動畫影片 -->
                 <video autoplay loop muted playsinline class="w-full h-auto opacity-70 group-hover:opacity-100 transition-opacity duration-1000">
                     <source src="jimeng-2026-02-24-6258-將這張圖片變成流暢的循環動畫地圖動畫Motion 開頭和結尾要一樣 要看起來有質....mp4" type="video/mp4">
                     <img src="https://joanne82424250-maker.github.io/my-web/15.jpg" alt="空拍位置圖" class="w-full h-auto">
@@ -629,7 +625,6 @@
                 </div>
                 <div class="w-full md:w-1/2 flex justify-center md:justify-end">
                     <div class="relative w-full max-w-[320px] sm:max-w-[400px] aspect-[9/16] rounded-2xl overflow-hidden shadow-[0_0_80px_rgba(193,160,110,0.2)] border border-brand-gold/20 group bg-black reveal-wipe-wrapper reveal tilt-card interactive-hover" data-cursor-text="PLAY">
-                        <!-- 替換為指定的直式建築影片 -->
                         <video id="brand-video" autoplay muted loop playsinline preload="metadata" class="w-full h-full object-cover">
                             <source src="日初觀山.mp4" type="video/mp4">
                         </video>
@@ -653,8 +648,16 @@
                 </div>
             </div>
             
-            <div id="vr-iframe-wrapper" class="hidden w-full aspect-video rounded-2xl overflow-hidden shadow-2xl">
+            <div id="vr-iframe-wrapper" class="hidden w-full aspect-video rounded-2xl overflow-hidden shadow-2xl bg-gray-200 relative">
                 <iframe id="vr-iframe" src="" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
+            </div>
+
+            <!-- 🌟 新增：VR 全螢幕按鈕 (預設隱藏，點擊載入 VR 後顯示) 🌟 -->
+            <div id="vr-fullscreen-btn-container" class="hidden mt-8 flex justify-center">
+                <button onclick="openVRFullscreen()" class="interactive-hover flex items-center gap-2 bg-brand-dark text-white px-8 py-3 rounded-full hover:bg-brand-gold transition-colors shadow-lg group">
+                    <i class="ph ph-corners-out text-xl group-hover:scale-110 transition-transform"></i>
+                    <span class="tracking-widest text-sm">全螢幕觀看</span>
+                </button>
             </div>
         </div>
     </section>
@@ -784,7 +787,7 @@
                 
                 mobileMenuOverlay.classList.remove('opacity-0', 'pointer-events-none');
                 lenis.stop();
-                document.body.style.overflow = 'hidden';
+                document.body.style.overflow = 'hidden'; 
                 
                 navbar.classList.add('bg-transparent');
                 navbar.classList.remove('bg-white/90', 'backdrop-blur-md', 'shadow-lg');
@@ -1002,24 +1005,18 @@
         if (immersiveSection && canvas) {
             const ctx = canvas.getContext('2d');
             
-            // 設定您總共輸出的圖片數量 (ezgif-frame-001 ~ ezgif-frame-097 = 97 張)
             const frameCount = 97;
             const images = [];
             
-            // 固定畫布的繪製解析度 (這確保圖片以高畫質渲染，CSS 的 object-cover 會幫忙處理滿版)
             canvas.width = 1920; 
             canvas.height = 1080;
 
-            // 預載入所有的序列圖
             for (let i = 1; i <= frameCount; i++) {
                 const img = new Image();
-                // 動態生成檔名：ezgif-frame-001.png, ezgif-frame-002.png ...
-                // 註：若您的圖片實際是 png 檔，請將這裡的 .jpg 改為 .png 即可！
                 const frameNum = i.toString().padStart(3, '0');
                 img.src = `ezgif-frame-${frameNum}.png`; 
                 
                 img.onload = () => {
-                    // 當第一張圖載入完成時，立刻畫上去，避免畫面一開始全黑
                     if (i === 1) {
                         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                     }
@@ -1027,19 +1024,14 @@
                 images.push(img);
             }
 
-            // 為了平滑過渡，我們設定「目標幀」與「當前幀」進行物理運算
             let targetFrame = 1;
             let currentFrame = 1;
 
-            // 核心繪圖引擎
             function renderScrollCanvas() {
-                // Lerp 平滑插值：讓 currentFrame 慢慢追上 targetFrame (數字越小越滑順，但也越延遲)
                 currentFrame += (targetFrame - currentFrame) * 0.15;
                 
-                // 取出實際要畫的陣列索引 (0 到 96)
                 const frameIndex = Math.max(0, Math.min(frameCount - 1, Math.round(currentFrame) - 1));
                 
-                // 確保該張圖片已經成功載入，才進行繪製
                 if (images[frameIndex] && images[frameIndex].complete) {
                     ctx.drawImage(images[frameIndex], 0, 0, canvas.width, canvas.height);
                 }
@@ -1048,19 +1040,16 @@
             }
             requestAnimationFrame(renderScrollCanvas);
 
-            // 監聽滾動事件，將滾動進度對應到第幾張圖片
             window.addEventListener('scroll', () => {
                 const start = immersiveSection.offsetTop;
                 const distance = immersiveSection.offsetHeight - window.innerHeight;
                 let p = (window.scrollY - start) / distance;
 
                 if (p >= -0.1 && p <= 1.1) {
-                    p = Math.max(0, Math.min(1, p)); // 將進度限制在 0~1 之間
+                    p = Math.max(0, Math.min(1, p)); 
                     
-                    // 計算目標幀 (1 到 97)
                     targetFrame = 1 + (p * (frameCount - 1));
 
-                    // 文字浮現邏輯控制
                     if (p > 0.15 && p < 0.85) {
                         scrollVideoText.style.opacity = '1';
                         scrollVideoText.style.transform = 'translateY(0)';
@@ -1088,13 +1077,33 @@
             }
         });
 
-        // --- VR 與 Lightbox 邏輯 ---
+        // --- 🌟 VR 與 Lightbox 邏輯 🌟 ---
         function loadVR() {
             const container = document.getElementById('vr-container');
             const wrapper = document.getElementById('vr-iframe-wrapper');
+            const fsBtn = document.getElementById('vr-fullscreen-btn-container'); // 新增取得按鈕
             document.getElementById('vr-iframe').src = "https://www.qwhouse720.com/tour/a04bf933b0b50a3f";
             container.classList.add('hidden');
             wrapper.classList.remove('hidden');
+            if (fsBtn) fsBtn.classList.remove('hidden'); // 載入後顯示全螢幕按鈕
+        }
+
+        // 新增：VR 全螢幕處理邏輯
+        function openVRFullscreen() {
+            const wrapper = document.getElementById('vr-iframe-wrapper');
+            const iframe = document.getElementById('vr-iframe');
+            
+            // 檢查裝置是否支援標準全螢幕 API (Android / PC)
+            if (wrapper.requestFullscreen) {
+                wrapper.requestFullscreen();
+            } else if (wrapper.webkitRequestFullscreen) { /* Safari (Mac/iPad) */
+                wrapper.webkitRequestFullscreen();
+            } else if (wrapper.msRequestFullscreen) { /* IE11 */
+                wrapper.msRequestFullscreen();
+            } else {
+                // 針對 iPhone Safari 無法使用區塊 Fullscreen API 的完美 Fallback：另開新分頁
+                window.open(iframe.src, "_blank");
+            }
         }
 
         const lightbox = document.getElementById('lightbox');
